@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Python Data Types for Kids</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;700&family=Nunito:wght@500;700&display=swap">
+<style>
+:root{--bg:#EAF4FF;--card:#fff;--ink:#1F2A44;--mut:#5B6785;--line:#D5E3F7;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#101830;--card:#1A2548;--ink:#EEF3FF;--mut:#A8B5D8;--line:#2E3C6B}}
+:root[data-theme="dark"]{--bg:#101830;--card:#1A2548;--ink:#EEF3FF;--mut:#A8B5D8;--line:#2E3C6B}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:500 17px/1.55 Nunito,system-ui,sans-serif}
+h1,h2,h3,.big,.tag,button{font-family:Fredoka,Nunito,system-ui,sans-serif}
+.wrap{max-width:980px;margin:0 auto;padding:18px 14px 40px}
+.hero{text-align:center;padding:18px 0 8px}
+.hero h1{font-size:clamp(34px,7vw,56px);margin:0;line-height:1.1}
+.hero p{margin:8px auto 0;max-width:34em;color:var(--mut)}
+.snake{font-size:64px;display:inline-block;animation:wig 2.4s ease-in-out infinite}
+@keyframes wig{50%{transform:rotate(12deg) translateY(-6px)}}
+nav{display:flex;gap:8px;overflow-x:auto;padding:14px 2px;scrollbar-width:thin}
+nav button{flex:none;border:3px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:8px 16px;font-size:17px;font-weight:500;cursor:pointer}
+nav button[aria-selected="true"]{background:var(--c);border-color:var(--c);color:#fff;transform:translateY(-2px)}
+button:focus-visible,textarea:focus-visible{outline:4px solid #FFC933;outline-offset:2px}
+.card{background:var(--card);border:3px solid var(--c);border-radius:24px;padding:20px;margin-bottom:18px}
+.card h2{margin:0 0 4px;font-size:28px}
+.pill{display:inline-block;background:var(--c);color:#fff;border-radius:999px;padding:2px 14px;font:700 17px Fredoka,sans-serif;margin-left:6px}
+.what{background:color-mix(in srgb,var(--c) 14%,var(--card));border-radius:16px;padding:12px 16px;margin:12px 0 0;font-size:19px}
+.head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.head h3{margin:0;font-size:22px}
+.btn{border:0;border-radius:14px;padding:10px 18px;font-size:18px;font-weight:700;cursor:pointer;color:#fff;background:var(--c)}
+.btn.alt{background:transparent;color:var(--ink);border:3px solid var(--line)}
+.stage{background:color-mix(in srgb,var(--c) 9%,var(--card));border-radius:20px;padding:14px}
+.dots{display:flex;gap:6px;margin-bottom:10px}
+.dots i{width:34px;height:8px;border-radius:9px;background:var(--line);transition:.4s}
+.dots i.on{background:var(--c)}
+pre,textarea{font:500 17px/1.6 "SF Mono",Menlo,Consolas,monospace;margin:0;tab-size:4}
+.strip{background:#14203B;color:#E8EEFF;border-radius:14px;padding:12px 16px;min-height:56px;font-size:22px;overflow-x:auto}
+.strip code{font:inherit;white-space:pre}
+.c{color:#7E8FB8}.s{color:#7BE0A0}.k{color:#FFB454}.f{color:#6FB6FF}.n{color:#FF8FA3}
+.lg{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 0;min-height:34px}
+.lg span{opacity:0;transform:scale(.6);transition:.4s cubic-bezier(.3,1.6,.5,1);background:var(--card);border:2px dashed var(--c);border-radius:10px;padding:2px 10px;font-size:16px}
+.a1 .l1,.a2 .l2,.a2 .l3{opacity:1;transform:none}
+.l3{transition-delay:.3s!important}
+.scene{display:flex;flex-direction:column;align-items:center;padding:14px 0 4px}
+.tag{background:var(--c);color:#fff;font-size:22px;padding:4px 20px;border-radius:12px 12px 0 0;opacity:0;transform:translateY(-26px) rotate(-8deg);transition:.7s cubic-bezier(.3,1.6,.5,1)}
+.box{width:min(100%,520px);min-height:150px;border:4px solid var(--c);border-radius:20px;background:var(--card);padding:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;opacity:0;transform:scale(.7);transition:.6s cubic-bezier(.3,1.6,.5,1)}
+.a1 .tag,.a1 .box{opacity:1;transform:none}
+.row{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;align-items:flex-end}
+.it{opacity:0;display:inline-block}
+.a2 .it{animation:pop .6s cubic-bezier(.3,1.7,.5,1) calc(var(--i,0)*.22s) both}
+@keyframes pop{from{opacity:0;transform:translateY(-70px) scale(.3) rotate(-20deg)}to{opacity:1;transform:none}}
+.big{font-size:64px;line-height:1;font-weight:700;color:var(--c)}
+.pt{color:#FF6B6B;display:inline-block;animation:pulse 1s infinite}
+@keyframes pulse{50%{transform:scale(1.9)}}
+.emo{font-size:34px}
+.tile{background:var(--c);color:#fff;font:700 40px Fredoka,sans-serif;width:54px;height:62px;border-radius:12px;display:grid;place-items:center}
+.q{font:700 44px Fredoka;color:var(--c)}
+.slot{border:3px solid var(--c);border-radius:12px;padding:6px 12px;text-align:center;background:color-mix(in srgb,var(--c) 10%,var(--card))}
+.slot small{display:block;font:700 15px Fredoka;color:var(--c)}
+.kv{display:flex;gap:6px;align-items:center;font-size:20px}
+.kv b{background:var(--c);color:#fff;border-radius:10px;padding:2px 12px;font-family:Fredoka}
+.kv span{border:3px solid var(--c);border-radius:10px;padding:2px 12px}
+.sw{width:100px;height:50px;border-radius:30px;background:#BFC9DE;position:relative;animation:tr 4s infinite}
+.sw i{position:absolute;top:5px;left:5px;width:40px;height:40px;border-radius:50%;background:#fff;box-shadow:0 2px 6px #0004;animation:kn 4s infinite}
+.a2 .sw{animation:pop .6s both,tr 4s 1s infinite}
+.a2 .sw i{animation:kn 4s 1s infinite}
+@keyframes kn{0%,45%{transform:translateX(50px)}50%,95%{transform:none}100%{transform:translateX(50px)}}
+@keyframes tr{0%,45%{background:#3DC27A}50%,95%{background:#BFC9DE}100%{background:#3DC27A}}
+.tf{position:relative;height:50px;width:150px;text-align:center}
+.tf b{position:absolute;inset:0;font:700 42px Fredoka;opacity:0;animation:sh 4s infinite}
+.tf b:first-child{color:#3DC27A;animation-delay:1s}
+.tf b:last-child{color:#FF6B6B;animation-delay:3s}
+@keyframes sh{0%{opacity:1}45%{opacity:1}50%,100%{opacity:0}}
+.nothing{border:4px dashed var(--c);border-radius:16px;padding:14px 30px;font:700 30px Fredoka;color:var(--c)}
+.a2 .it.dup{animation:pop .6s cubic-bezier(.3,1.7,.5,1) 1.3s both,out 1.2s 2.4s forwards}
+@keyframes out{20%,60%{transform:translateX(-10px) rotate(-8deg)}40%,80%{transform:translateX(10px) rotate(8deg)}100%{opacity:0;transform:translateY(-70px) scale(.2)}}
+.badge{margin-top:12px;background:var(--card);border:3px solid var(--c);border-radius:14px;padding:6px 16px;font:500 18px "SF Mono",Menlo,Consolas,monospace;opacity:0;transform:scale(.6);transition:.6s cubic-bezier(.3,1.6,.5,1)}
+.a3 .badge{opacity:1;transform:none}
+.say{display:flex;gap:12px;align-items:center;margin-top:12px;background:var(--card);border-radius:16px;padding:10px 14px;min-height:64px}
+.say span{font-size:34px}
+.say p{margin:0;animation:fade .5s}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}}
+.ed{position:relative;height:210px;background:#14203B;border-radius:14px;overflow:hidden}
+.ed pre,.ed textarea{position:absolute;inset:0;padding:14px;width:100%;height:100%;border:0;overflow:auto;white-space:pre;background:transparent;color:#E8EEFF}
+.ed textarea{color:transparent;caret-color:#fff;resize:none;z-index:1}
+.out{background:#0B1226;color:#E8EEFF;border-radius:14px;padding:12px 16px;margin-top:10px;min-height:110px;font:500 18px/1.6 "SF Mono",Menlo,Consolas,monospace;white-space:pre-wrap}
+.out .e{color:#FFB3B3}
+.acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;align-items:center}
+.ch{margin:12px 0 0;font-weight:700}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin:0;padding:0;list-style:none}
+.facts li{background:color-mix(in srgb,var(--c) 12%,var(--card));border-radius:14px;padding:10px 14px}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01s!important;animation-iteration-count:1!important;transition-duration:.01s!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="hero"><div class="snake">🐍</div><h1>Python Data Types</h1><p>Every value in Python lives in a labeled box. Each box holds a different kind of thing. Let’s meet them all!</p></header>
+<nav id="tabs" role="tablist" aria-label="Data types"></nav>
+<main id="lesson"></main>
+</div>
+<script>
+const $=s=>document.querySelector(s);
+const it=(i,h,c='')=>`<span class="it ${c}" style="--i:${i}">${h}</span>`;
+const D=[
+{k:'int',e:'🔢',c:'#3D8BFD',n:'Integer',tag:'whole numbers',what:'An int is a whole number: 1, 2, 3 … No dots and no pieces. Perfect for counting apples!',v:'age',val:'6',t:'int',put:'6 has no dot, so it is a whole number.',
+vis:()=>it(0,'6','big')+`<div class="row">${[1,2,3,4,5,6].map(i=>it(i,'🍎','emo')).join('')}</div>`,
+code:`# int = whole numbers\nage = 6\napples = 4\nprint(age + apples)\nprint(type(age))`,
+facts:['Whole numbers only: 0, 7, 100, even -5','You can add +, subtract -, and multiply *','type(age) tells us: int'],ch:'Change age to your real age, then press Run!'},
+{k:'float',e:'🌡️',c:'#FF8A3D',n:'Float',tag:'numbers with a dot',what:'A float is a number with a dot (a decimal point). Use it for things in between, like 3.5 feet tall or $2.99!',v:'height',val:'3.5',t:'float',put:'3.5 has a dot, so it is a float.',
+vis:()=>it(0,'3<b class="pt">.</b>5','big')+it(2,'a number with a dot in the middle','cap'),
+code:`# float = numbers with a dot\nheight = 3.5\nprice = 2.99\nprint(height + 1)\nprint(type(height))`,
+facts:['Has a dot: 0.5, 3.14, 9.99','Even 5.0 is a float because of the dot','type(height) tells us: float'],ch:'Make price = 4.25 and print it!'},
+{k:'str',e:'🔤',c:'#8B5CF6',n:'String',tag:'words and letters',what:'A string is text: letters, words, or sentences. We always put quotation marks " " around it.',v:'name',val:'"Sam"',t:'str',put:'Letters go inside quotes, so it is a string.',
+vis:()=>`<div class="row">${it(0,'"','q')}${[...'Sam'].map((l,i)=>it(i+1,l,'tile')).join('')}${it(4,'"','q')}</div>`,
+code:`# str = text inside quotes\nname = "Sam"\nprint("Hello " + name)\nprint(name * 3)\nprint(len(name))\nprint(type(name))`,
+facts:['Always wrapped in " " or \' \'','Join words with +','len(name) counts the letters'],ch:'Put your own name in the quotes!'},
+{k:'bool',e:'💡',c:'#3DC27A',n:'Boolean',tag:'True or False',what:'A bool is like a light switch. It can only be True (on) or False (off). Nothing else!',v:'is_happy',val:'True',t:'bool',put:'Only two choices: True or False.',
+vis:()=>`<span class="it sw" style="--i:0"><i></i></span><div class="tf it" style="--i:1"><b>True</b><b>False</b></div>`,
+code:`# bool = True or False\nis_happy = True\nis_raining = False\nprint(is_happy)\nprint(5 > 3)\nprint(type(is_happy))`,
+facts:['Only two values: True and False','Capital T and F, no quotes!','5 > 3 gives True'],ch:'Change is_happy to False.'},
+{k:'list',e:'🧺',c:'#FF6B6B',n:'List',tag:'many things in order',what:'A list holds many items in a row, in order. It uses square brackets [ ]. Counting starts at 0!',v:'fruits',val:'["apple", "banana", "cherry"]',t:'list',put:'Three items sit in a row. Each gets a number spot.',
+vis:()=>`<div class="row">${[['🍎','apple'],['🍌','banana'],['🍒','cherry']].map((f,i)=>it(i,`<div class="slot"><span class="emo">${f[0]}</span><br>${f[1]}<small>spot ${i}</small></div>`)).join('')}</div>`,
+code:`# list = many items in [ ]\nfruits = ["apple", "banana", "cherry"]\nprint(fruits[0])\nfruits.append("grape")\nprint(fruits)\nprint(len(fruits))\nprint(type(fruits))`,
+facts:['Square brackets [ ]','fruits[0] is the first item','You can change it: append adds more'],ch:'Add your favorite fruit with append!'},
+{k:'tuple',e:'🔒',c:'#14B8C4',n:'Tuple',tag:'a locked list',what:'A tuple is like a list that is locked. It uses round brackets ( ). Once made, it can’t be changed!',v:'colors',val:'("red", "green", "blue")',t:'tuple',put:'Three items, locked up tight with round brackets.',
+vis:()=>`<div class="row">${[['🔴','red'],['🟢','green'],['🔵','blue']].map((f,i)=>it(i,`<div class="slot"><span class="emo">${f[0]}</span><br>${f[1]}<small>spot ${i}</small></div>`)).join('')}${it(3,'🔒','big')}</div>`,
+code:`# tuple = locked list in ( )\ncolors = ("red", "green", "blue")\nprint(colors[1])\nprint(len(colors))\nprint(type(colors))`,
+facts:['Round brackets ( )','Counting starts at 0 here too','No append! It is locked 🔒'],ch:'Print colors[2]. What do you get?'},
+{k:'dict',e:'📖',c:'#E0A100',n:'Dictionary',tag:'labels and answers',what:'A dict is like a dictionary: every word (key) has a meaning (value). It uses curly brackets { } with key: value pairs.',v:'pet',val:'{"name": "Buddy", "age": 3}',t:'dict',put:'Each label (key) points to an answer (value).',
+vis:()=>[['🐶 name','Buddy'],['🎂 age','3']].map((p,i)=>it(i,`<div class="kv"><b>${p[0]}</b>➜<span>${p[1]}</span></div>`)).join(''),
+code:`# dict = key: value pairs in { }\npet = {"name": "Buddy", "age": 3}\nprint(pet["name"])\npet["age"] = 4\nprint(pet)\nprint(type(pet))`,
+facts:['Curly brackets { } with key: value','Look up with pet["name"]','Keys are the labels'],ch:'Change the pet’s name to your own pet!'},
+{k:'set',e:'🎒',c:'#E0559B',n:'Set',tag:'no copies allowed',what:'A set is a bag of unique things. If you try to put the same thing in twice, Python keeps only one!',v:'stickers',val:'{"star", "heart", "star"}',t:'set',put:'“star” was added twice. The bag keeps just one!',
+vis:()=>`<div class="row">${it(0,'<span class="emo">⭐</span> star')}${it(1,'<span class="emo">💖</span> heart')}${it(2,'<span class="emo">⭐</span> star','dup')}</div>`,
+code:`# set = unique items in { }\nstickers = {"star", "heart", "star"}\nprint(stickers)\nprint(len(stickers))\nprint(type(stickers))`,
+facts:['Curly brackets, no colons','No duplicates, ever','len(stickers) is 2, not 3!'],ch:'Add "moon" to the set. How many now?'},
+{k:'None',e:'🫥',c:'#6B7A99',n:'NoneType',tag:'nothing yet',what:'None means “nothing here yet”. It is an empty box, waiting for something to put inside.',v:'snack',val:'None',t:'NoneType',put:'The box is empty on purpose. That is None.',
+vis:()=>it(0,'None','nothing')+it(1,'🫥 nothing here yet','cap'),
+code:`# None = an empty box\nsnack = None\nprint(snack)\nprint(type(snack))\nsnack = "cookie"\nprint(snack)\nprint(type(snack))`,
+facts:['Capital N, no quotes','Not zero, not empty text: nothing!','A box can change type later'],ch:'Watch the type change when snack gets a cookie!'}];
+
+/* highlight */
+const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+const hl=s=>esc(s).replace(/(#.*)|("[^"\n]*"|'[^'\n]*')|\b(True|False|None)\b|\b(print|type|len|str|int|float|bool|list|tuple|set)\b|\b(\d+\.?\d*)\b/g,(m,c,s,k,f,n)=>`<span class="${c?'c':s?'s':k?'k':f?'f':'n'}">${m}</span>`);
+
+/* mini Python interpreter (no eval) */
+class F{constructor(v){this.v=v}toString(){return Number.isInteger(this.v)?this.v.toFixed(1):''+this.v}}
+class T extends Array{}class S extends Set{}
+const E=m=>{throw Error(m)};
+const tn=v=>v===null?'NoneType':v instanceof F?'float':typeof v=='boolean'?'bool':typeof v=='number'?'int':typeof v=='string'?'str':v instanceof T?'tuple':Array.isArray(v)?'list':v instanceof S?'set':'dict';
+const rp=(v,q)=>{if(v&&v.c)return`<class '${v.c}'>`;const t=tn(v),j=a=>[...a].map(x=>rp(x,1)).join(', ');return t=='NoneType'?'None':t=='bool'?(v?'True':'False'):t=='str'?(q?`'${v}'`:v):t=='float'?''+v:t=='int'?''+v:t=='list'?`[${j(v)}]`:t=='tuple'?`(${j(v)}${v.length==1?',':''})`:t=='set'?`{${j(v)}}`:`{${[...v].map(([k,x])=>rp(k,1)+': '+rp(x,1)).join(', ')}}`};
+const nm=v=>v instanceof F?v.v:+v;
+const tr=v=>!(v==null||v===false||v===0||v===''||v.v===0||v.length===0||v.size===0);
+const eq=(a,b)=>typeof a=='string'||typeof b=='string'||a==null||b==null?a===b:(a instanceof F||typeof a=='number'||typeof a=='boolean')?nm(a)===nm(b):rp(a,1)===rp(b,1);
+const ar=(o,a,b)=>{
+ if(a==null||b==null)E(`TypeError: None can’t be used with “${o}”`);
+ if(typeof a=='string'||Array.isArray(a)){
+  if(o=='+'){if(typeof a!=typeof b)E(`TypeError: you can’t add a ${tn(a)} and a ${tn(b)}. Try str() first!`);return typeof a=='string'?a+b:a.concat(b)}
+  if(o=='*'&&typeof b!='string'){const n=Math.max(0,nm(b));return typeof a=='string'?a.repeat(n):Array.from({length:n}).flatMap(()=>a)}
+  E(`TypeError: can’t use “${o}” with a ${tn(a)}`)}
+ if(typeof b=='string'||Array.isArray(b)){if(o=='*')return ar(o,b,a);E(`TypeError: can’t mix a ${tn(a)} and a ${tn(b)} with “${o}”`)}
+ const x=nm(a),y=nm(b);let fl=a instanceof F||b instanceof F||o=='/';
+ if((o=='/'||o=='//'||o=='%')&&y===0)E('ZeroDivisionError: you can’t divide by zero!');
+ const r=o=='+'?x+y:o=='-'?x-y:o=='*'?x*y:o=='/'?x/y:o=='//'?Math.floor(x/y):o=='%'?((x%y)+y)%y:x**y;
+ if(o=='**'&&y<0)fl=true;return fl||!Number.isInteger(r)?new F(r):r};
+const cm=(o,a,b)=>{if(o=='in')return typeof b=='string'?b.includes(a):b instanceof Map||b instanceof S?b.has(a):b.some(x=>eq(x,a));
+ if(o=='==')return eq(a,b);if(o=='!=')return!eq(a,b);
+ const x=typeof a=='string'?a:nm(a),y=typeof b=='string'?b:nm(b);return o=='<'?x<y:o=='>'?x>y:o=='<='?x<=y:x>=y};
+const ix=(a,i)=>{if(a instanceof Map){if(!a.has(i))E(`KeyError: ${rp(i,1)} is not in the dictionary`);return a.get(i)}
+ const n=nm(i),k=n<0?a.length+n:n;if(!(k>=0&&k<a.length))E('IndexError: that spot doesn’t exist. Counting starts at 0!');return a[k]};
+const me=(a,n,g)=>n=='append'?(a.push(g[0]),null):n=='add'?(a.add(g[0]),null):n=='upper'?a.toUpperCase():n=='lower'?a.toLowerCase():n=='title'?a.replace(/\b\w/g,c=>c.toUpperCase()):n=='keys'?[...a.keys()]:n=='values'?[...a.values()]:E(`AttributeError: a ${tn(a)} has no ${n}()`);
+
+function run(code){
+ const env={},out=[];
+ const H={print:(...a)=>{out.push({t:a.map(x=>rp(x)).join(' ')});return null},type:v=>({c:tn(v)}),
+  len:v=>typeof v=='string'||Array.isArray(v)?v.length:v instanceof Map||v instanceof S?v.size:E('TypeError: len() needs text or a collection'),
+  int:v=>typeof v=='string'?(v.trim()===''||isNaN(+v)?E(`ValueError: “${v}” is not a whole number`):Math.trunc(+v)):Math.trunc(nm(v)),
+  float:v=>new F(typeof v=='string'?(isNaN(+v)?E(`ValueError: “${v}” is not a number`):+v):nm(v)),
+  str:v=>rp(v),bool:tr,list:v=>[...v],tuple:v=>T.from([...v]),set:v=>new S([...v])};
+ const P=src=>{
+  const tk=[],r=/\s*(?:(\d+\.\d*|\.\d+|\d+)|(f?"[^"]*"|f?'[^']*')|([A-Za-z_]\w*)|(\*\*|\/\/|==|!=|<=|>=|[-+*\/%()<>,\[\]{}:.]))/y;
+  let m,i=0;src=src.trimEnd();
+  while(i<src.length){r.lastIndex=i;m=r.exec(src);if(!m)E(`SyntaxError: I don’t understand “${src.slice(i).trim()[0]}”`);i=r.lastIndex;
+   tk.push(m[1]!=null?{n:m[1]}:m[2]!=null?{s:m[2]}:m[3]!=null?{id:m[3]}:{o:m[4]})}
+  let p=0;const pk=()=>tk[p]||{},isO=v=>pk().o===v,isI=v=>pk().id===v,ac=v=>isO(v)&&(p++,1),need=v=>{if(!ac(v))E(`SyntaxError: I was looking for “${v}”`)};
+  const args=()=>{const a=[];if(!ac(')')){do{a.push(or())}while(ac(','));need(')')}return a};
+  const atom=()=>{const t=tk[p++];if(!t)E('SyntaxError: this line ends too soon');
+   if(t.n!=null)return/\./.test(t.n)?new F(+t.n):+t.n;
+   if(t.s!=null){const f=t.s[0]=='f',b=t.s.slice(f?2:1,-1).replace(/\\n/g,'\n');return f?b.replace(/\{([^}]*)\}/g,(_,e)=>rp(P(e))):b}
+   if(t.id){if(t.id=='True')return true;if(t.id=='False')return false;if(t.id=='None')return null;
+    if(isO('(')&&H[t.id]){p++;return H[t.id](...args())}
+    if(t.id in env)return env[t.id];E(`NameError: “${t.id}” is not defined yet. Did you make that box?`)}
+   if(t.o=='('){if(ac(')'))return new T();const a=or();if(ac(',')){const l=[a];while(!isO(')')){l.push(or());if(!ac(','))break}need(')');return T.from(l)}need(')');return a}
+   if(t.o=='['){const l=[];while(!isO(']')){l.push(or());if(!ac(','))break}need(']');return l}
+   if(t.o=='{'){if(ac('}'))return new Map();const f=or();
+    if(ac(':')){const d=new Map([[f,or()]]);while(ac(',')){if(isO('}'))break;const k=or();need(':');d.set(k,or())}need('}');return d}
+    const s=new S([f]);while(ac(',')){if(isO('}'))break;s.add(or())}need('}');return s}
+   E(`SyntaxError: I didn’t expect “${t.o}” here`)};
+  const post=()=>{let a=atom();for(;;){if(ac('[')){const k=or();need(']');a=ix(a,k)}else if(isO('.')){p++;const n=(tk[p++]||{}).id;need('(');a=me(a,n,args())}else return a}};
+  const un=()=>ac('-')?ar('*',-1,un()):pw();
+  const pw=()=>{const a=post();return ac('**')?ar('**',a,un()):a};
+  const mul=()=>{let a=un();while(['*','/','//','%'].includes(pk().o)){const o=tk[p++].o;a=ar(o,a,un())}return a};
+  const add=()=>{let a=mul();while(isO('+')||isO('-')){const o=tk[p++].o;a=ar(o,a,mul())}return a};
+  const cmp=()=>{let a=add();for(;;){const o=pk().o,op=['==','!=','<','>','<=','>='].includes(o)?o:isI('in')?'in':null;if(!op)return a;p++;a=cm(op,a,add())}};
+  const not=()=>{if(isI('not')){p++;return!tr(not())}return cmp()};
+  const and=()=>{let a=not();while(isI('and')){p++;const b=not();a=tr(a)?b:a}return a};
+  function or(){let a=and();while(isI('or')){p++;const b=and();a=tr(a)?a:b}return a}
+  const v=or();if(p<tk.length)E(`SyntaxError: Python got confused near “${tk[p].n??tk[p].s??tk[p].id??tk[p].o}”`);return v};
+ code.split('\n').forEach((raw,n)=>{
+  const line=raw.replace(/^((?:[^"'#]|"[^"]*"|'[^']*')*)#.*$/,'$1').trim();if(!line)return;
+  try{let m;
+   if(m=line.match(/^([A-Za-z_]\w*)\s*([-+*\/])?=(?!=)\s*(.+)$/)){let v=P(m[3]);if(m[2])v=ar(m[2],m[1] in env?env[m[1]]:E(`NameError: “${m[1]}” is not defined yet`),v);env[m[1]]=v}
+   else if(m=line.match(/^([A-Za-z_]\w*)\[(.+?)\]\s*=(?!=)\s*(.+)$/)){const c=env[m[1]]??E(`NameError: “${m[1]}” is not defined yet`),k=P(m[2]),v=P(m[3]);
+    if(c instanceof Map)c.set(k,v);else if(c instanceof T||typeof c=='string')E(`TypeError: a ${tn(c)} is locked. You can’t change it!`);else if(Array.isArray(c)){const q=nm(k);c[q<0?c.length+q:q]=v}else E('TypeError: can’t change this')}
+   else P(line)}
+  catch(e){out.push({t:`Oops on line ${n+1}: ${e.message}`,e:1})}});
+ return out}
+
+/* page */
+let cur=D[0],tok=0;
+const tabs=$('#tabs');
+tabs.innerHTML=D.map((d,i)=>`<button role="tab" style="--c:${d.c}" data-i="${i}">${d.e} ${d.k}</button>`).join('');
+tabs.onclick=e=>{const b=e.target.closest('button');if(b)show(+b.dataset.i)};
+const w=ms=>new Promise(r=>setTimeout(r,ms));
+
+function show(i){
+ const d=cur=D[i];
+ [...tabs.children].forEach((b,j)=>b.setAttribute('aria-selected',j==i));
+ const [nmv,vv]=[d.v,d.val];
+ $('#lesson').innerHTML=`<article class="card" style="--c:${d.c}">
+ <h2>${d.e} ${d.n} <span class="pill">${d.k}</span></h2><div style="color:var(--mut)">${d.tag}</div>
+ <p class="what">${d.what}</p>
+ <div class="head" style="margin-top:18px"><h3>1. Watch it happen</h3><button class="btn" id="re">↻ Play again</button></div>
+ <div class="stage" id="st"><div class="dots"><i></i><i></i><i></i><i></i></div>
+ <div class="strip"><code id="cd"></code></div>
+ <div class="lg"><span class="l1"><b>${nmv}</b> = the box’s name</span><span class="l2"><b>=</b> puts it inside</span><span class="l3"><b>${vv.replace(/</g,'&lt;')}</b> = the value</span></div>
+ <div class="scene"><div class="tag">${nmv}</div><div class="box">${d.vis()}</div><div class="badge">type(${nmv}) ➜ &lt;class '${d.t}'&gt;</div></div>
+ <div class="say"><span>🐍</span><p id="cap"></p></div></div>
+ <div class="head" style="margin-top:22px"><h3>2. Try it yourself!</h3></div>
+ <div class="ed"><pre id="hl" aria-hidden="true"></pre><textarea id="ed" spellcheck="false" autocapitalize="off" aria-label="Python code"></textarea></div>
+ <div class="acts"><button class="btn" id="run">▶ Run code</button><button class="btn alt" id="rs">Reset</button></div>
+ <div class="out" id="out" aria-live="polite">Press Run to see the magic ✨</div>
+ <p class="ch">🎯 Challenge: ${d.ch}</p>
+ <div class="head" style="margin-top:18px"><h3>3. Remember</h3></div>
+ <ul class="facts">${d.facts.map(f=>`<li>⭐ ${esc(f)}</li>`).join('')}</ul></article>`;
+ const ed=$('#ed'),h=$('#hl');
+ const sync=()=>{h.innerHTML=hl(ed.value)+'\n ';h.scrollTop=ed.scrollTop;h.scrollLeft=ed.scrollLeft};
+ ed.value=d.code;sync();
+ ed.oninput=sync;ed.onscroll=()=>{h.scrollTop=ed.scrollTop;h.scrollLeft=ed.scrollLeft};
+ const go=()=>{$('#out').innerHTML=run(ed.value).map(o=>`<div${o.e?' class="e"':''}>${esc(o.t)}</div>`).join('')||'Nothing printed. Add a print( ) line!'};
+ $('#run').onclick=go;ed.onkeydown=e=>{if((e.ctrlKey||e.metaKey)&&e.key=='Enter'){e.preventDefault();go()}};
+ $('#rs').onclick=()=>{ed.value=d.code;sync();$('#out').textContent='Code is back to the start. Press Run!'};
+ $('#re').onclick=play;play()}
+
+async function play(){
+ const my=++tok,d=cur,st=$('#st'),cd=$('#cd'),cap=$('#cap'),dots=st.querySelectorAll('.dots i');
+ st.className='stage';cd.innerHTML='';dots.forEach(x=>x.className='');
+ const step=(n,msg)=>{if(n)st.classList.add('a'+n);dots[n].className='on';cap.textContent=msg;cap.style.animation='none';cap.offsetWidth;cap.style.animation=''};
+ const line=`${d.v} = ${d.val}`;
+ step(0,'Let’s write one line of Python. Watch it get typed!');
+ for(let i=1;i<=line.length;i++){if(my!=tok)return;cd.innerHTML=hl(line.slice(0,i));await w(70)}
+ await w(700);if(my!=tok)return;
+ step(1,`Step 1: “${d.v}” is the name on our box. A named box is called a variable!`);
+ await w(3200);if(my!=tok)return;
+ step(2,`Step 2: the = sign puts the value in the box. ${d.put}`);
+ await w(4600);if(my!=tok)return;
+ step(3,`Step 3: ask Python “what kind are you?” with type(${d.v}). It answers: ${d.t}! 🎉`)}
+show(0);
+</script>
+</body>
+</html>
