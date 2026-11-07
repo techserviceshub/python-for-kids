@@ -33,7 +33,7 @@ button:active{transform:scale(.97)}
 .tip{background:var(--cf);border-left:6px solid var(--or);border-radius:10px;padding:10px 14px;margin:12px 0}
 </style></head><body><main>
 <div class="hero"><div class="snake">🐍</div><h1>Data Types Adventure!</h1><p>Esse’s Python Lesson 2 &nbsp;•&nbsp; int, float and string</p></div>
-<div class="score" id="score">⭐ Stars: 0 / 10</div>
+<div class="score" id="score">⭐ Stars: 0 / 31</div>
 
 <h2>1. Quick Revision: Variables</h2>
 <div class="card">In Scratch you used <b>set [score] to 0</b>. In Python we write <code>score = 0</code>. A variable is a <b>box with a name</b> that keeps something inside. Press ▶ Run, then <b>change the numbers</b> and run again!</div>
@@ -47,10 +47,10 @@ button:active{transform:scale(.97)}
 <div class="tip">💡 <b>Trick:</b> <code>5</code> is a number, but <code>"5"</code> in quotes is just text, like a letter! Open the 🔤 String tab and try example 10 to see the magic.</div>
 <div id="tabs" style="margin:10px 0"></div><div id="ex"></div>
 
-<h2>3. Your Turn: 10 Challenges!</h2>
+<h2>3. Your Turn: 31 Challenges!</h2>
 <div class="card">Write your <b>own code</b> in each box, press <b>Run &amp; Check</b>, and Python will tell you if you got it right. Different challenges need different thinking, so no copying! 😉</div>
-<div id="qs"></div>
-<div class="card" id="win" style="display:none;text-align:center;font-size:1.5rem">🏆 WOW Esse! You finished all 10 challenges! You are a Data Type Master! 🎉🐍</div>
+<div id="qtabs" style="margin:10px 0"></div><div id="qs"></div>
+<div class="card" id="win" style="display:none;text-align:center;font-size:1.5rem">🏆 WOW Esse! You finished all 31 challenges! You are a Data Type Master! 🎉🐍</div>
 </main>
 <script>
 // ---------- Tiny Python engine (teaching subset) ----------
@@ -106,7 +106,7 @@ function editor(code,cb,rows){
  d.innerHTML='<textarea spellcheck="false" style="min-height:'+(rows||92)+'px"></textarea><button>▶ Run</button><button class="alt">↺ Reset</button><div class="out">Press ▶ Run to see what happens…</div>';
  const ta=d.querySelector("textarea"),[b1,b2]=d.querySelectorAll("button"),o=d.querySelector(".out");ta.value=code;
  b1.textContent=cb?"▶ Run & Check":"▶ Run";
- b1.onclick=()=>{const r=run(ta.value);o.className="out"+(r.err?" err":"");
+ b1.onclick=()=>{if(!ta.value.replace(/#.*/g,"").trim()){o.className="out err";o.textContent="✍️ Please write something inside the box first, then press Run!";return}const r=run(ta.value);o.className="out"+(r.err?" err":"");
   o.textContent=r.err?"😅 Oops! "+r.err:(r.out.join("\n")||"(Nothing printed. Use print(...) to show things!)");
   if(cb)cb(r,ta.value,d)};
  b2.onclick=()=>{ta.value=code;o.className="out";o.textContent="Reset! Try again."};
@@ -173,18 +173,50 @@ const Q=[
 ["Single quotes","Make <code>color</code> hold your favorite color. This time use <b>single quotes</b> ' ' and print it.","",(e,o,c)=>is(e,"color","str")&&/color\s*=\s*'/.test(c)&&o.length>0||"Use the little single quote: color = 'red'"],
 ["Quote trouble 🤯","Make <code>sentence</code> say exactly: <b>Esse's Python</b> (it has an apostrophe!). Use double quotes outside so Python doesn’t get confused, then print it.","",(e,o,c)=>is(e,"sentence","str")&&e.sentence.v=="Esse's Python"&&/sentence\s*=\s*"/.test(c)&&has(o,"Esse's Python")||"Put the whole sentence inside double quotes, apostrophe included."],
 ["Super challenge 🏆","Make <code>toys</code> (an int), <code>weight</code> (a float) and <code>animal</code> (a string). Then print the <b>type of all three</b>.","",(e,o)=>is(e,"toys","int")&&is(e,"weight","float")&&is(e,"animal","str")&&has(o,"<class 'int'>")&&has(o,"<class 'float'>")&&has(o,"<class 'str'>")||"Three variables, three print(type(...)) lines!"]];
+const N=(t,p,chk,s)=>[t,p,s||"",chk],R=(re,c)=>re.test(c);
+const QS={
+int:[Q[0],Q[1],Q[2],
+N("Add to the toy box",`Make <code>toys</code> equal to 20, then print <code>toys + 5</code>.`,(e,o)=>is(e,"toys","int")&&e.toys.v==20&&has(o,"25")||"Try: toys = 20 and then print(toys + 5)"),
+N("Marbles",`Make <code>red</code> = 4 and <code>blue</code> = 6. Make <code>marbles</code> by adding them, then print it.`,(e,o,c)=>is(e,"marbles","int")&&e.marbles.v==10&&R(/marbles\s*=.*\+/,c)&&has(o,"10")||"marbles = red + blue, then print(marbles)"),
+N("Spider legs",`A spider has 8 legs. Make <code>legs</code> = 8 and <code>spiders</code> = 3. Make <code>total</code> with multiplication and print it.`,(e,o,c)=>is(e,"total","int")&&e.total.v==24&&R(/\*/,c)&&has(o,"24")||"total = legs * spiders, then print it"),
+N("Below zero",`Make <code>temp</code> equal to -2 (a negative whole number) and print its type.`,(e,o)=>is(e,"temp","int")&&e.temp.v==-2&&has(o,"<class 'int'>")||"temp = -2 then print(type(temp))"),
+N("Score twice",`Start with <code>score = 0</code>. Add 5 to score two times (write <code>score = score + 5</code> twice) and print score.`,(e,o,c)=>is(e,"score","int")&&e.score.v==10&&(c.match(/score\s*=\s*score/g)||[]).length>=2&&has(o,"10")||"Write score = score + 5 two times, then print(score)"),
+N("Share the sweets",`12 sweets are shared between 5 kids. Use <code>//</code> to make <code>each</code> (whole sweets per kid) and print it.`,(e,o,c)=>is(e,"each","int")&&e.each.v==2&&R(/\/\//,c)&&has(o,"2")||"each = 12 // 5, then print(each)"),
+N("Your own subtraction",`Make any two ints <code>a</code> and <code>b</code>. Make <code>diff</code> = a - b and print it.`,(e,o,c)=>is(e,"a","int")&&is(e,"b","int")&&is(e,"diff","int")&&e.diff.v==e.a.v-e.b.v&&R(/diff\s*=.*-/,c)&&o.length>0||"Make a, b, then diff = a - b, then print(diff)")],
+float:[Q[3],Q[4],Q[5],
+N("Speedy",`Make <code>speed</code> equal to 4.5 and print its type.`,(e,o)=>is(e,"speed","float")&&e.speed.v==4.5&&has(o,"<class 'float'>")||"speed = 4.5 then print(type(speed))"),
+N("The bill",`Milk costs 1.5 and juice costs 2.0. Make <code>milk</code>, <code>juice</code> and <code>bill</code> (add them) and print bill.`,(e,o,c)=>is(e,"bill","float")&&e.bill.v==3.5&&R(/bill\s*=.*\+/,c)&&has(o,"3.5")||"bill = milk + juice, then print(bill)"),
+N("Bag of apples",`The bag weighs <code>bag = 2.5</code> and an apple weighs <code>apple = 0.5</code>. Take the apple out: make <code>rest</code> with subtraction and print it.`,(e,o,c)=>is(e,"rest","float")&&e.rest.v==2&&R(/rest\s*=.*-/,c)&&has(o,"2.0")||"rest = bag - apple, then print(rest)"),
+N("Cut in half",`Make <code>half</code> by dividing 9 by 2 with <code>/</code> and print it.`,(e,o,c)=>is(e,"half","float")&&e.half.v==4.5&&R(/\//,c)&&has(o,"4.5")||"half = 9 / 2, then print(half)"),
+N("Switch type",`Make <code>n</code> = 8 (an int). Then make <code>m</code> using <code>float(n)</code> and print m.`,(e,o,c)=>is(e,"n","int")&&is(e,"m","float")&&R(/float\(/,c)&&has(o,"8.0")||"m = float(n), then print(m)"),
+N("Float team",`Pick any two floats <code>p</code> and <code>q</code>. Make <code>total</code> = p + q and print the <b>type</b> of total.`,(e,o)=>is(e,"p","float")&&is(e,"q","float")&&is(e,"total","float")&&has(o,"<class 'float'>")||"p and q need dots, like p = 1.5. Then print(type(total))"),
+N("Float fix-up 🐛",`Oops! <code>weight</code> is an int but we need a float. Fix the code so <code>weight</code> is 6.0 and its type prints as float.`,(e,o)=>is(e,"weight","float")&&has(o,"<class 'float'>")||"Try weight = 6.0 (with a dot)",`weight = 6\nprint(type(weight))`)],
+str:[Q[6],Q[7],Q[8],
+N("Say hi",`Make <code>hello</code> hold the word Hi (in quotes) and print its type.`,(e,o)=>is(e,"hello","str")&&has(o,"<class 'str'>")||'hello = "Hi" then print(type(hello))'),
+N("Full name",`Make <code>first</code> and <code>last</code> with your own names. Join them with a <b>space</b> into <code>full</code> and print it.`,(e,o,c)=>is(e,"first","str")&&is(e,"last","str")&&is(e,"full","str")&&e.full.v==e.first.v+" "+e.last.v&&R(/full\s*=.*\+/,c)&&o.length>0||'full = first + " " + last'),
+N("Laugh",`Make <code>laugh</code> say hahaha using only <code>"ha"</code> and <code>*</code>. Print it.`,(e,o,c)=>is(e,"laugh","str")&&e.laugh.v=="hahaha"&&R(/\*/,c)&&has(o,"hahaha")||'laugh = "ha" * 3'),
+N("Food and drink",`Make <code>food</code> with <b>single</b> quotes and <code>drink</code> with <b>double</b> quotes. Then print them joined with the word and in the middle.`,(e,o,c)=>is(e,"food","str")&&is(e,"drink","str")&&R(/food\s*=\s*'/,c)&&R(/drink\s*=\s*"/,c)&&has(o,e.food.v+" and "+e.drink.v)||`food = 'pizza', drink = "milk", print(food + " and " + drink)`),
+N("Quotes inside",`Make <code>says</code> hold: <b>He said "Hi"</b>. Use <b>single</b> quotes outside, then print it.`,(e,o,c)=>is(e,"says","str")&&e.says.v=='He said "Hi"'&&R(/says\s*=\s*'/,c)&&has(o,'He said "Hi"')||`says = 'He said "Hi"'`),
+N("Text vs number",`Make <code>text7</code> hold the <b>text</b> "7" (in quotes) and <code>number7</code> hold the <b>int</b> 7. Print the type of both.`,(e,o)=>is(e,"text7","str")&&e.text7.v=="7"&&is(e,"number7","int")&&e.number7.v==7&&has(o,"<class 'str'>")&&has(o,"<class 'int'>")||'text7 = "7" and number7 = 7, then print(type(...)) twice'),
+N("Count letters",`Make <code>word</code> hold any word. Print how many letters it has using <code>len(word)</code>.`,(e,o,c)=>is(e,"word","str")&&e.word.v.length>0&&R(/len\(/,c)&&has(o,String(e.word.v.length))||"print(len(word))")],
+mix:[Q[9]]};
+const OFF={int:0,float:10,str:20,mix:30};
 const done=new Set(),sc=document.getElementById("score");
-Q.forEach(([t,p,s,chk],i)=>{
+function renderQ(list,off){list.forEach(([t,p,s,chk],j)=>{const i=off+j;
  const w=document.createElement("div");w.className="card q";
- w.innerHTML="<h3>⭐ Challenge "+(i+1)+": "+t+"</h3><div>"+p+"</div>";
- const fb=document.createElement("div");fb.className="fb";
+ w.innerHTML="<h3>⭐ Challenge "+(j+1)+": "+t+"</h3><div>"+p+"</div>";
+ const fb=document.createElement("div");fb.className="fb";if(done.has(i)){fb.className="fb ok";fb.textContent="🎉 Already done!"}
  const ed=editor(s,(r,code,d)=>{
   if(r.err){fb.className="fb no";fb.textContent="Not yet. Read the message above and fix it!";return}
   const res=chk(r.env,r.out,code);
   if(res===true||res===undefined||res===null||res===""){fb.className="fb ok";fb.textContent="🎉 Correct! Great job, Esse!";done.add(i)}
   else{fb.className="fb no";fb.textContent="🤔 Almost! "+res}
-  sc.textContent="⭐ Stars: "+done.size+" / 10";
-  document.getElementById("win").style.display=done.size==10?"block":"none"},120);
+  sc.textContent="⭐ Stars: "+done.size+" / 31";
+  document.getElementById("win").style.display=done.size==31?"block":"none"},120);
  ed.style.margin="8px 0 0";ed.style.padding="0";ed.style.border="0";
- w.append(ed,fb);document.getElementById("qs").append(w)});
+ w.append(ed,fb);document.getElementById("qs").append(w)})}
+const QT={int:["🔢 Int (10)","var(--bl)"],float:["🌊 Float (10)","var(--gr)"],str:["🔤 String (10)","var(--or)"],mix:["🏆 Boss (1)","var(--pu)"]};
+function showQ(k){document.getElementById("qs").innerHTML="";renderQ(QS[k],OFF[k]);[...document.getElementById("qtabs").children].forEach(b=>{b.style.opacity=b.dataset.k==k?1:.55;b.style.outline=b.dataset.k==k?"3px solid var(--tx)":"none"})}
+Object.keys(QT).forEach(k=>{const b=document.createElement("button");b.dataset.k=k;b.textContent=QT[k][0];b.style.background=QT[k][1];b.onclick=()=>showQ(k);document.getElementById("qtabs").append(b)});
+showQ("int");
 </script></body></html>
