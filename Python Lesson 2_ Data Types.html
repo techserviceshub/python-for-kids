@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Esse’s Python Lesson 2: Data Types</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#fff8ec;--card:#fff;--tx:#2b2b3a;--mut:#6b6b80;--bl:#2e75b6;--gr:#2e8b57;--or:#e07b1a;--pu:#7a4fc4;--code:#1e1e2e;--cf:#e8f0ff;--ok:#d9f5e3;--bad:#ffe3e0;--bd:#e5d9c3}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17171f;--card:#232330;--tx:#f1f1f7;--mut:#a5a5b8;--bl:#6fb1ee;--gr:#5fd08e;--or:#ffa24d;--pu:#b394f0;--code:#0d0d14;--cf:#262a40;--ok:#1d3b2a;--bad:#4a2523;--bd:#3a3a4c}}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:18px/1.55 "Segoe UI",Calibri,Arial,sans-serif}
+main{max-width:860px;margin:0 auto;padding:16px}
+.hero{text-align:center;padding:28px 12px}
+.hero h1{font-size:2.4rem;margin:.2em 0;color:var(--bl)}
+.hero p{color:var(--mut);margin:0}
+.snake{font-size:4rem}
+h2{color:var(--or);font-size:1.6rem;margin:1.6em 0 .4em}
+.card{background:var(--card);border:2px solid var(--bd);border-radius:18px;padding:16px;margin:14px 0}
+.types{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.t{border-radius:18px;padding:14px;color:#fff}
+.t b{font-size:1.4rem}.t code{background:rgba(0,0,0,.25);padding:2px 8px;border-radius:8px}
+.int{background:#2e75b6}.flt{background:#2e8b57}.str{background:#c4651a}
+textarea{width:100%;min-height:92px;background:var(--code);color:#fff;border:0;border-radius:12px;padding:12px;font:17px/1.5 Consolas,Menlo,monospace;resize:vertical}
+button{background:var(--gr);color:#fff;border:0;border-radius:12px;padding:10px 20px;font-size:1rem;font-weight:700;cursor:pointer;margin:8px 8px 0 0}
+button.alt{background:var(--pu)}
+button:active{transform:scale(.97)}
+.out{background:var(--cf);border-radius:12px;padding:10px 12px;margin-top:8px;font:16px/1.5 Consolas,Menlo,monospace;white-space:pre-wrap;min-height:1.8em}
+.out.err{background:var(--bad)}
+.fb{margin-top:8px;padding:10px 12px;border-radius:12px;font-weight:700;display:none}
+.fb.ok{display:block;background:var(--ok)}.fb.no{display:block;background:var(--bad)}
+.q h3{margin:0 0 6px;color:var(--bl)}
+.score{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--card);border:2px solid var(--bd);border-radius:14px;padding:6px 14px;text-align:center;font-weight:700;margin-top:8px}
+.tip{background:var(--cf);border-left:6px solid var(--or);border-radius:10px;padding:10px 14px;margin:12px 0}
+</style></head><body><main>
+<div class="hero"><div class="snake">🐍</div><h1>Data Types Adventure!</h1><p>Esse’s Python Lesson 2 &nbsp;•&nbsp; int, float and string</p></div>
+<div class="score" id="score">⭐ Stars: 0 / 10</div>
+
+<h2>1. Quick Revision: Variables</h2>
+<div class="card">In Scratch you used <b>set [score] to 0</b>. In Python we write <code>score = 0</code>. A variable is a <b>box with a name</b> that keeps something inside. Press ▶ Run, then <b>change the numbers</b> and run again!</div>
+<div id="rev"></div>
+
+<h2>2. Meet the Three Data Types</h2>
+<div class="types">
+<div class="t int"><b>🔢 int</b><br>Whole numbers, no dot.<br><code>7</code> <code>100</code> <code>-3</code></div>
+<div class="t flt"><b>🌊 float</b><br>Numbers with a dot.<br><code>2.5</code> <code>3.14</code> <code>0.5</code></div>
+<div class="t str"><b>🔤 string</b><br>Words inside quotes.<br><code>"Esse"</code> <code>'cat'</code></div></div>
+<div class="tip">💡 <b>Trick:</b> <code>5</code> is a number, but <code>"5"</code> in quotes is just text, like a letter! Open the 🔤 String tab and try example 10 to see the magic.</div>
+<div id="tabs" style="margin:10px 0"></div><div id="ex"></div>
+
+<h2>3. Your Turn: 10 Challenges!</h2>
+<div class="card">Write your <b>own code</b> in each box, press <b>Run &amp; Check</b>, and Python will tell you if you got it right. Different challenges need different thinking, so no copying! 😉</div>
+<div id="qs"></div>
+<div class="card" id="win" style="display:none;text-align:center;font-size:1.5rem">🏆 WOW Esse! You finished all 10 challenges! You are a Data Type Master! 🎉🐍</div>
+</main>
+<script>
+// ---------- Tiny Python engine (teaching subset) ----------
+const I=v=>({t:"int",v}),F=v=>({t:"float",v}),S=v=>({t:"str",v});
+const fmt=x=>x.t=="str"?x.v:x.t=="int"?String(x.v):(Number.isInteger(x.v)?x.v.toFixed(1):String(+x.v.toPrecision(15)));
+function lex(s){const r=[],re=/\s*(?:(\d+\.\d+|\d+)|("[^"\n]*"|'[^'\n]*')|([A-Za-z_]\w*)|(\/\/|[-+*\/%(),=]))/y;let i=0;
+ while(i<s.length){if(/^\s*(#.*)?$/.test(s.slice(i)))break;re.lastIndex=i;const m=re.exec(s);
+  if(!m){if(/["']/.test(s.slice(i)))throw "Check your quotes: every opening quote needs a closing quote of the same kind!";throw "I don’t understand this part: "+s.slice(i).trim().slice(0,12);}
+  i=re.lastIndex;if(m[1])r.push(["n",m[1]]);else if(m[2])r.push(["s",m[2].slice(1,-1)]);else if(m[3])r.push(["id",m[3]]);else r.push(["op",m[4]]);}
+ return r}
+function op(a,b,o){
+ if(a.t=="str"||b.t=="str"){
+  if(o=="+"&&a.t==b.t)return S(a.v+b.v);
+  if(o=="*"&&a.t!=b.t&&(a.t=="int"||b.t=="int"))return S(a.t=="str"?a.v.repeat(b.v):b.v.repeat(a.v));
+  throw "Python can’t do “"+o+"” between a "+a.t+" and a "+b.t+". Numbers and text don’t mix like that!";}
+ const x=a.v,y=b.v,fl=a.t=="float"||b.t=="float";
+ if((o=="/"||o=="//"||o=="%")&&y==0)throw "You can’t divide by zero!";
+ let r=o=="+"?x+y:o=="-"?x-y:o=="*"?x*y:o=="/"?x/y:o=="//"?Math.floor(x/y):x-Math.floor(x/y)*y;
+ return(fl||o=="/")?F(r):I(r)}
+function run(code){
+ const env={},out=[];let err=null;
+ const lines=code.split("\n");
+ try{lines.forEach((ln,n)=>{try{
+  const tk=lex(ln);if(!tk.length)return;let p=0;
+  const pk=()=>tk[p],nx=()=>tk[p++],isop=o=>pk()&&pk()[0]=="op"&&pk()[1]==o;
+  const call=(f,a)=>{
+   if(f=="print"){out.push(a.map(fmt).join(" "));return null}
+   if(f=="type")return S("<class '"+a[0].t+"'>");
+   if(f=="int")return I(Math.trunc(+a[0].v));
+   if(f=="float")return F(+a[0].v);
+   if(f=="str")return S(fmt(a[0]));
+   if(f=="len")return I(a[0].v.length);
+   throw "I don’t know a command called “"+f+"”."};
+  function atom(){const t=nx();if(!t)throw "The line ended too early. Is something missing?";
+   if(t[0]=="n")return t[1].includes(".")?F(parseFloat(t[1])):I(parseInt(t[1]));
+   if(t[0]=="s")return S(t[1]);
+   if(t[0]=="id"){if(isop("(")){nx();const a=[];while(!isop(")")){if(!pk())throw "You forgot a closing bracket )";a.push(ex());if(isop(","))nx();}nx();return call(t[1],a)}
+    if(!(t[1] in env))throw "I don’t know “"+t[1]+"” yet. Did you create it first?";return env[t[1]]}
+   if(t[1]=="("){const v=ex();if(!isop(")"))throw "You forgot a closing bracket )";nx();return v}
+   throw "Unexpected “"+t[1]+"”"}
+  const un=()=>{if(isop("-")){nx();const v=un();return v.t=="str"?(()=>{throw "Can’t put - before text"})():{t:v.t,v:-v.v}}return atom()};
+  const tm=()=>{let a=un();while(["*","/","//","%"].some(isop)){const o=nx()[1];a=op(a,un(),o)}return a};
+  const ex=()=>{let a=tm();while(isop("+")||isop("-")){const o=nx()[1];a=op(a,tm(),o)}return a};
+  if(tk.length>1&&tk[0][0]=="id"&&tk[1][0]=="op"&&tk[1][1]=="="){const nm=tk[0][1];p=2;const v=ex();if(!v)throw "Nothing to store!";env[nm]=v}
+  else{ex()}
+  if(p<tk.length)throw "There’s extra stuff at the end: “"+tk[p][1]+"”";
+ }catch(e){throw "Line "+(n+1)+": "+(typeof e=="string"?e:"something looks wrong")}})}catch(e){err=e}
+ return{env,out,err}}
+
+// ---------- Editor widget ----------
+function editor(code,cb,rows){
+ const d=document.createElement("div");d.className="card";
+ d.innerHTML='<textarea spellcheck="false" style="min-height:'+(rows||92)+'px"></textarea><button>▶ Run</button><button class="alt">↺ Reset</button><div class="out">Press ▶ Run to see what happens…</div>';
+ const ta=d.querySelector("textarea"),[b1,b2]=d.querySelectorAll("button"),o=d.querySelector(".out");ta.value=code;
+ b1.textContent=cb?"▶ Run & Check":"▶ Run";
+ b1.onclick=()=>{const r=run(ta.value);o.className="out"+(r.err?" err":"");
+  o.textContent=r.err?"😅 Oops! "+r.err:(r.out.join("\n")||"(Nothing printed. Use print(...) to show things!)");
+  if(cb)cb(r,ta.value,d)};
+ b2.onclick=()=>{ta.value=code;o.className="out";o.textContent="Reset! Try again."};
+ return d}
+
+// ---------- Revision & examples ----------
+const rev=[
+"# A variable is a box with a name\nage = 6\nprint(age)",
+"# Variables can do math!\napples = 3\nmore = 4\nprint(apples + more)",
+"# Change the number and run again!\nstickers = 10\nstickers = stickers - 3\nprint(stickers)"];
+rev.forEach(c=>document.getElementById("rev").append(editor(c)));
+const EX={
+int:[
+["Make an int","age = 6\nprint(age)"],
+["Ask Python: what type is it?","cars = 12\nprint(type(cars))"],
+["A big whole number","people = 1000\nprint(people)"],
+["A negative int (minus sign)","temperature = -5\nprint(temperature)"],
+["Add","apples = 3\nmore = 4\nprint(apples + more)"],
+["Subtract","stickers = 10\ngave = 4\nprint(stickers - gave)"],
+["Multiply","legs = 4\ndogs = 3\nprint(legs * dogs)"],
+["Change a variable (like Scratch: change score by 1)","score = 0\nscore = score + 1\nscore = score + 1\nprint(score)"],
+["Share 7 cookies: // and % (leftover)","cookies = 7\nprint(cookies // 2)\nprint(cookies % 2)"],
+["Two variables make a new one","boys = 5\ngirls = 6\nclass_size = boys + girls\nprint(class_size)"]],
+float:[
+["Make a float (it has a dot!)","height = 1.5\nprint(height)"],
+["Ask Python: what type is it?","pi = 3.14\nprint(type(pi))"],
+["A price","price = 0.99\nprint(price)"],
+["Add floats","a = 1.5\nb = 2.5\nprint(a + b)"],
+["Subtract","weight = 20.5\nprint(weight - 0.5)"],
+["Multiply: 4 toys at 2.5 dollars","price = 2.5\nprint(price * 4)"],
+["Divide","print(7 / 2)"],
+["int + float = float","x = 5\ny = 2.5\nprint(x + y)\nprint(type(x + y))"],
+["Surprise! Dividing always gives a float","print(10 / 2)\nprint(type(10 / 2))"],
+["Switch types: float() and int()","n = 7\nprint(float(n))\nprint(int(3.9))"]],
+str:[
+["Make a string (double quotes)","name = \"Esse\"\nprint(name)"],
+["Single quotes work too","pet = 'cat'\nprint(pet)"],
+["Ask Python: what type is it?","word = \"hello\"\nprint(type(word))"],
+["Join two strings with +","print(\"Hi \" + \"Esse\")"],
+["Join two variables","first = \"Ice\"\nsecond = \"cream\"\nprint(first + second)"],
+["Add a space in the middle","a = \"Good\"\nb = \"morning\"\nprint(a + \" \" + b)"],
+["Repeat with *","print(\"ha\" * 3)"],
+["An apostrophe inside double quotes","print(\"It's fun!\")"],
+["Double quotes inside single quotes","print('He said \"Wow!\"')"],
+["Magic: 5 vs \"5\" and counting letters","print(5 + 5)\nprint(\"5\" + \"5\")\nprint(len(\"Python\"))"]]};
+const TN={int:["🔢 Int","var(--bl)"],float:["🌊 Float","var(--gr)"],str:["🔤 String","var(--or)"]};
+function show(k){const ex=document.getElementById("ex");ex.innerHTML="";
+ [...document.getElementById("tabs").children].forEach(b=>{b.style.opacity=b.dataset.k==k?1:.55;b.style.outline=b.dataset.k==k?"3px solid var(--tx)":"none"});
+ EX[k].forEach(([t,c],i)=>{const h=document.createElement("b");h.textContent=TN[k][0]+" Example "+(i+1)+": "+t;h.style.color=TN[k][1];ex.append(h,editor(c,null,72))})}
+Object.keys(EX).forEach(k=>{const b=document.createElement("button");b.dataset.k=k;b.textContent=TN[k][0]+" (10)";b.style.background=TN[k][1];b.onclick=()=>show(k);document.getElementById("tabs").append(b)});
+show("int");
+
+// ---------- 10 challenges ----------
+const is=(e,n,t)=>e[n]&&e[n].t==t;
+const has=(o,s)=>o.some(l=>l.includes(s));
+const Q=[
+["Make an int","Make a variable called <code>age</code> and put the whole number 6 inside.","",(e)=>is(e,"age","int")&&e.age.v==6||"Hint: age = 6 (no quotes and no dot!)"],
+["Print an int","Your toy box has 12 cars. Make a variable called <code>cars</code> with that number, then <b>print</b> it.","",(e,o)=>is(e,"cars","int")&&e.cars.v==12&&has(o,"12")||"Make cars = 12 and then print(cars)."],
+["Sticker math","You have 9 stickers and give 4 away. Make <code>stickers</code> and <code>gave</code>, then make <code>left</code> using subtraction and print left.","",(e,o,c)=>is(e,"left","int")&&e.left.v==5&&/left\s*=.*-/.test(c)&&has(o,"5")||"left should equal stickers - gave. Did you print it?"],
+["Fix the bug 🐛","Oh no! The quotes turned height into a string. Fix it so <code>height</code> is a <b>float</b>.","height = \"1.2\"\nprint(type(height))",(e,o)=>is(e,"height","float")&&has(o,"<class 'float'>")||"Remove the quotes around 1.2 so it becomes a float."],
+["Shopping time","One toy costs 2.5 dollars and you buy 4 toys. Make <code>price</code> and <code>count</code>, then make <code>total</code> using multiplication and print it.","",(e,o,c)=>is(e,"total","float")&&e.total.v==10&&/\*/.test(c)&&has(o,"10.0")||"total = price * count, then print(total). Price needs a dot!"],
+["Your lucky float","Pick ANY float you like and store it in <code>lucky</code>. Then print its <b>type</b>.","",(e,o)=>is(e,"lucky","float")&&has(o,"<class 'float'>")||"A float needs a dot, like 7.7. Use print(type(lucky))."],
+["Double quotes","Make <code>pet</code> hold the name of an animal. Use <b>double quotes</b> \" \" and print it.","",(e,o,c)=>is(e,"pet","str")&&/pet\s*=\s*"/.test(c)&&o.length>0||"pet = \"dog\" (words need quotes!). Don’t forget print."],
+["Single quotes","Make <code>color</code> hold your favorite color. This time use <b>single quotes</b> ' ' and print it.","",(e,o,c)=>is(e,"color","str")&&/color\s*=\s*'/.test(c)&&o.length>0||"Use the little single quote: color = 'red'"],
+["Quote trouble 🤯","Make <code>sentence</code> say exactly: <b>Esse's Python</b> (it has an apostrophe!). Use double quotes outside so Python doesn’t get confused, then print it.","",(e,o,c)=>is(e,"sentence","str")&&e.sentence.v=="Esse's Python"&&/sentence\s*=\s*"/.test(c)&&has(o,"Esse's Python")||"Put the whole sentence inside double quotes, apostrophe included."],
+["Super challenge 🏆","Make <code>toys</code> (an int), <code>weight</code> (a float) and <code>animal</code> (a string). Then print the <b>type of all three</b>.","",(e,o)=>is(e,"toys","int")&&is(e,"weight","float")&&is(e,"animal","str")&&has(o,"<class 'int'>")&&has(o,"<class 'float'>")&&has(o,"<class 'str'>")||"Three variables, three print(type(...)) lines!"]];
+const done=new Set(),sc=document.getElementById("score");
+Q.forEach(([t,p,s,chk],i)=>{
+ const w=document.createElement("div");w.className="card q";
+ w.innerHTML="<h3>⭐ Challenge "+(i+1)+": "+t+"</h3><div>"+p+"</div>";
+ const fb=document.createElement("div");fb.className="fb";
+ const ed=editor(s,(r,code,d)=>{
+  if(r.err){fb.className="fb no";fb.textContent="Not yet. Read the message above and fix it!";return}
+  const res=chk(r.env,r.out,code);
+  if(res===true||res===undefined||res===null||res===""){fb.className="fb ok";fb.textContent="🎉 Correct! Great job, Esse!";done.add(i)}
+  else{fb.className="fb no";fb.textContent="🤔 Almost! "+res}
+  sc.textContent="⭐ Stars: "+done.size+" / 10";
+  document.getElementById("win").style.display=done.size==10?"block":"none"},120);
+ ed.style.margin="8px 0 0";ed.style.padding="0";ed.style.border="0";
+ w.append(ed,fb);document.getElementById("qs").append(w)});
+</script></body></html>
