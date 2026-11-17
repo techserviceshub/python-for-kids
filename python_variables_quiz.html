@@ -109,6 +109,8 @@ pre.code,.code{background:var(--dark);border-radius:8px;padding:14px 16px;margin
 
 textarea{width:100%;min-height:110px;background:var(--bar);color:#fff;border:2px solid var(--green);border-radius:8px;padding:10px 12px;font:inherit;font-size:17px;resize:vertical;outline:none}
 textarea:disabled{opacity:.85}
+textarea.codeta{font-family:Consolas,"Courier New",monospace;line-height:1.7;min-height:140px;border-color:#8a95a8;color:#ffd97a}
+textarea.codeta:focus{border-color:var(--green)}
 
 /* hint & result */
 .hintbtn{margin-top:14px;background:transparent;border:2px solid var(--yellow);color:var(--yellow);border-radius:20px;padding:3px 16px;font:inherit;font-size:15px;cursor:pointer}
@@ -148,7 +150,7 @@ footer{text-align:center;color:var(--muted);font-size:14px;margin-top:40px}
 
 <div class="topbar">
   <div class="in">
-    <b id="pcount">0 / 30 answered</b>
+    <b id="pcount">0 / 35 answered</b>
     <div class="track"><div class="fill" id="pfill"></div></div>
   </div>
 </div>
@@ -158,11 +160,11 @@ footer{text-align:center;color:var(--muted);font-size:14px;margin-top:40px}
 <div class="wrap">
   <header class="hero">
     <h1>🐍 Python <span>Variables</span> Quiz</h1>
-    <p>30 questions · 6 tabs · Take your time and have fun! 😊</p>
+    <p>35 questions · 7 sections · Take your time and have fun! 😊</p>
     <ul class="rules">
-      <li>Each question is worth <b>1 point</b> (30 points total).</li>
-      <li>Use the <b>tabs</b> at the top to move between sections.</li>
-      <li>The <b>Submit</b> button turns on only after you answer <b>all 30</b> questions.</li>
+      <li>Each question is worth <b>1 point</b> (35 points total).</li>
+      <li>Use the <b>sidebar</b> on the left to move between sections.</li>
+      <li>The <b>Submit</b> button turns on only after you answer <b>all 35</b> questions.</li>
       <li>Stuck? Press <b>💡 Hint</b>.</li>
       <li>The written questions can earn <b>half points</b> too.</li>
       <li>Drag &amp; drop: drag a chip, or just <b>click / tap</b> it.</li>
@@ -184,6 +186,7 @@ footer{text-align:center;color:var(--muted);font-size:14px;margin-top:40px}
 /* ============================================================
    QUESTIONS  (each tab starts with a "Remember" box)
    ============================================================ */
+const R = re => t => re.test(t);
 const TF = (q, ans, extra) => Object.assign({t:'mcq', q, opts:['True ✅','False ❌'], a: ans ? 0 : 1}, extra);
 
 const SECTIONS = [
@@ -382,6 +385,50 @@ const SECTIONS = [
     exp:'int = whole number (10), float = decimal number (3.14), string = text in quotes ("Ali").'}
   ]
 }
+,{
+  icon:'💻', short:'Coding', title:'Coding Challenges',
+  intro:`<h4>📘 Remember — Time to write real code!</h4>
+   Type the Python code yourself in the box. The computer checks your code <b>line by line</b>, and every correct line earns part of the point.
+   <ul>
+    <li>Spelling matters: <code>print</code> is right, <code>Print</code> is wrong.</li>
+    <li>Text needs <b>quotes</b>: <code>"Sam"</code>. Numbers do not.</li>
+    <li>Put <b>each statement on its own line</b>.</li>
+    <li>Use <code>=</code> to store a value and <code>print( )</code> to show it.</li>
+   </ul>`,
+  qs:[
+   {t:'code', q:`<b>Challenge 1:</b> Create a variable called <code>age</code> and store the whole number <code>10</code> in it.`,
+    checks:[{label:'<code>age = 10</code> (variable named <code>age</code> holding the int 10)', test:R(/^\s*age\s*=\s*10\s*$/m)}],
+    sample:'age = 10',
+    hint:'Name first, then <code>=</code>, then the value. A whole number needs no quotes.',
+    exp:'<code>age = 10</code> puts the int 10 into a box named <code>age</code>. No quotes, because it is a number.'},
+   {t:'code', q:`<b>Challenge 2:</b> Create a variable called <code>name</code> that stores the text <code>Sam</code>, then print it on the screen. (Two lines of code.)`,
+    checks:[{label:'<code>name = "Sam"</code> (text inside quotes)', test:R(/^\s*name\s*=\s*(["'])Sam\1\s*$/m)},
+            {label:'<code>print(name)</code> (variable name, no quotes)', test:R(/^\s*print\(\s*name\s*\)\s*$/m)}],
+    sample:'name = "Sam"\nprint(name)',
+    hint:'Line 1: store the text with quotes. Line 2: <code>print(</code> the variable name <code>)</code> — no quotes around the name.',
+    exp:'Line 1 stores the string "Sam". Line 2 prints what is inside the box. <code>print("name")</code> would print the word <i>name</i> instead.'},
+   {t:'code', q:`<b>Challenge 3:</b> Create <code>apples</code> with the value <code>3</code> and <code>oranges</code> with the value <code>4</code>. Then print how many fruits there are in total. (Three lines of code.)`,
+    checks:[{label:'<code>apples = 3</code>', test:R(/^\s*apples\s*=\s*3\s*$/m)},
+            {label:'<code>oranges = 4</code>', test:R(/^\s*oranges\s*=\s*4\s*$/m)},
+            {label:'<code>print(apples + oranges)</code>', test:R(/^\s*print\(\s*(apples\s*\+\s*oranges|oranges\s*\+\s*apples)\s*\)\s*$/m)}],
+    sample:'apples = 3\noranges = 4\nprint(apples + oranges)',
+    hint:'Make two variables, then add them inside <code>print( )</code> with a plus sign.',
+    exp:'<code>apples + oranges</code> adds the numbers inside the two boxes: 3 + 4 = 7, so the program prints <b>7</b>.'},
+   {t:'code', q:`<b>Challenge 4:</b> The variable <code>height</code> is already created. Write the one line of code that prints its <b>data type</b>.`, code:`height = 5.2`,
+    checks:[{label:'<code>print(type(height))</code>', test:R(/^\s*print\(\s*type\(\s*height\s*\)\s*\)\s*$/m)}],
+    sample:'height = 5.2\nprint(type(height))',
+    hint:'Use two functions: <code>type( )</code> inside <code>print( )</code>. Remember the closing brackets!',
+    exp:'<code>type(height)</code> finds the type and <code>print(...)</code> shows it. The output is <code>&lt;class \'float\'&gt;</code> because 5.2 has a decimal point.'},
+   {t:'code', q:`<b>Challenge 5 — Fix the bug!</b> This code has an <b>invalid variable name</b>. Rewrite both lines using a valid name.`, code:`my name = "Zoe"\nprint(my name)`,
+    checks:[{label:'A valid variable name (no space) that stores <code>"Zoe"</code>, like <code>my_name = "Zoe"</code>',
+             test:t=>/^\s*(?!\d)[A-Za-z_]\w*\s*=\s*(["'])Zoe\1\s*$/m.test(t)},
+            {label:'<code>print(...)</code> uses that <b>same</b> variable name',
+             test:t=>{ const m=t.match(/^\s*(?!\d)([A-Za-z_]\w*)\s*=\s*(["'])Zoe\2\s*$/m); return !!m && new RegExp('^\\s*print\\(\\s*'+m[1]+'\\s*\\)\\s*$','m').test(t); }}],
+    sample:'my_name = "Zoe"\nprint(my_name)',
+    hint:'Spaces are not allowed in names. Use an underscore instead, and use the same name in both lines.',
+    exp:'<code>my name</code> has a space, so it is invalid. Changing it to <code>my_name</code> fixes it. Both lines must use the same name.'}
+  ]
+}
 ];
 
 /* ============================================================
@@ -525,7 +572,18 @@ function rTheory(q, n, onChange){
     correct:()=>q.sample };
 }
 
-const RENDER = { mcq:rMcq, multi:rMulti, fill:rFill, drag:rDrag, sort:rSort, theory:rTheory };
+function rCode(q, n, onChange){
+  const ta = el('textarea','codeta'); ta.placeholder = '# Type your Python code here'; ta.spellcheck = false;
+  ta.setAttribute('autocapitalize','off'); ta.addEventListener('input', onChange);
+  const res = () => q.checks.map(c => !!c.test(ta.value));
+  return { el:ta, answered:()=>ta.value.trim().length>=3,
+    score:()=>res().filter(Boolean).length/q.checks.length,
+    reveal(){}, lock(){ ta.disabled = true; },
+    note(){ const r = res(); return '<div>The computer checked your code:</div>' + q.checks.map((c,i)=>`<div style="margin-top:3px">${r[i]?'✅':'❌'} ${c.label}</div>`).join(''); },
+    correct:()=>`<div class="code">${esc(q.sample)}</div>` };
+}
+
+const RENDER = { code:rCode, mcq:rMcq, multi:rMulti, fill:rFill, drag:rDrag, sort:rSort, theory:rTheory };
 
 /* ============================================================
    BUILD / TABS / SUBMIT
