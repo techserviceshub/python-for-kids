@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Python Variables Quiz</title>
+<style>
+:root{
+  --bg:#2e3849; --bar:#232b39; --card:#596270; --card2:#4b5361; --dark:#282c37;
+  --green:#04aa6d; --green2:#059862; --red:#e5534b; --yellow:#f5b83d; --text:#fff; --muted:#cfd6e2;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font-family:"Source Sans Pro","Segoe UI",Helvetica,Arial,sans-serif;font-size:18px;line-height:1.5}
+code,pre,.code,.blank,.chip,.slot{font-family:Consolas,"Courier New",monospace}
+code{background:var(--dark);padding:1px 7px;border-radius:5px;font-size:.92em;color:#ffd97a}
+
+/* top bar + tabs */
+.topbar{position:sticky;top:0;z-index:20;background:var(--bar);box-shadow:0 3px 10px rgba(0,0,0,.35)}
+.topbar .in{max-width:1120px;margin:auto;padding:10px 16px 6px;display:flex;align-items:center;gap:14px}
+.topbar b{white-space:nowrap;font-size:16px}
+.track{flex:1;height:12px;background:#3d4657;border-radius:8px;overflow:hidden}
+.fill{height:100%;width:0;background:var(--green);transition:width .35s}
+.layout{max-width:1120px;margin:auto;display:flex;align-items:flex-start;gap:8px;padding:0 12px}
+.side{position:sticky;top:58px;flex:0 0 235px;margin-top:26px;background:var(--bar);border-radius:12px;padding:12px 10px;display:flex;flex-direction:column;gap:6px}
+.side h6{margin:2px 8px 6px;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.tab{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:transparent;color:var(--muted);border:2px solid transparent;border-radius:10px;padding:10px 12px;font:inherit;font-size:17px;cursor:pointer;transition:.15s}
+.tab:hover{background:#2e3849;color:#fff}
+.tab.active{color:#fff;background:#2e3849;border-color:var(--green);font-weight:700}
+.tab .ti{font-size:20px;flex:none}
+.tab .tl{flex:1;white-space:nowrap}
+.tab small{background:#3d4657;border-radius:10px;padding:0 8px;font-size:13px;flex:none}
+.tab .ck{display:none;font-size:18px;flex:none;animation:tick .4s}
+.tab.done .ck{display:inline}
+.tab.done small{background:var(--green)}
+.tab.done:not(.active){color:#fff}
+@keyframes tick{from{transform:scale(0) rotate(-40deg)}to{transform:none}}
+
+.wrap{flex:1;min-width:0;max-width:860px;padding:26px 8px 60px}
+header.hero{text-align:center;padding:4px 0 18px}
+header.hero h1{font-size:40px;font-weight:400;margin:0 0 6px}
+header.hero h1 span{color:var(--green)}
+header.hero p{margin:4px 0;color:var(--muted)}
+.rules{display:inline-block;text-align:left;background:var(--bar);border-radius:10px;padding:12px 22px 12px 38px;margin-top:12px;font-size:16px;color:var(--muted)}
+.rules li{margin:3px 0}
+
+/* sections (tab panels) */
+.sec{display:none;margin-top:6px}
+.sec.active{display:block;animation:fade .25s}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.sec h2{font-size:30px;font-weight:400;margin:0 0 12px;padding-bottom:8px;border-bottom:3px solid var(--green)}
+.learn{background:#3a4a63;border-left:6px solid var(--yellow);border-radius:10px;padding:14px 18px;margin-bottom:22px;font-size:17px}
+.learn h4{margin:0 0 6px;color:var(--yellow);font-size:19px}
+.learn ul{margin:6px 0 0 20px;padding:0}
+.learn li{margin:4px 0}
+.nav{display:flex;justify-content:space-between;gap:10px;margin-top:8px}
+.nbtn{background:var(--card2);color:#fff;border:none;border-radius:6px;padding:9px 22px;font:inherit;font-size:17px;cursor:pointer}
+.nbtn:hover{background:#667082}
+.nbtn.next{background:var(--green)} .nbtn.next:hover{background:var(--green2)}
+
+/* question card */
+.card{background:var(--card);border-radius:12px;padding:20px 22px;margin-bottom:22px;border:3px solid transparent}
+.card.ok{border-color:var(--green)} .card.bad{border-color:var(--red)} .card.part{border-color:var(--yellow)}
+.card.flash{animation:flash 1.2s}
+@keyframes flash{30%{box-shadow:0 0 0 5px var(--yellow)}}
+.qhead{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px}
+.qn{background:var(--dark);border-radius:20px;padding:2px 14px;font-size:15px}
+.badge{font-size:15px;font-weight:700;border-radius:20px;padding:2px 14px;display:none}
+.badge.ok{background:var(--green);display:inline-block}
+.badge.bad{background:var(--red);display:inline-block}
+.badge.part{background:var(--yellow);color:#222;display:inline-block}
+.qtext{font-weight:700;font-size:19px;margin:4px 0 14px}
+pre.code,.code{background:var(--dark);border-radius:8px;padding:14px 16px;margin:0 0 14px;white-space:pre-wrap;font-size:17px;line-height:1.9;color:#fff;overflow-x:auto}
+.code.plain{font-family:inherit;font-size:18px}
+
+/* options */
+.opts{display:flex;flex-direction:column;gap:9px}
+.opt{display:flex;align-items:center;gap:12px;background:var(--card2);border-radius:8px;padding:11px 16px;cursor:pointer;border:2px solid transparent;transition:.15s}
+.opt:hover{background:#667082}
+.opt.sel{border-color:var(--green);background:#566176}
+.opt input{width:18px;height:18px;accent-color:var(--green);flex:none}
+.opt.ok{background:#1f7a55;border-color:var(--green)} .opt.bad{background:#8e3a3a;border-color:var(--red)}
+.locked .opt,.locked .chip,.locked .slot,.locked .zone{cursor:default}
+.locked .opt:hover{background:var(--card2)}
+
+/* fill */
+.blank{background:var(--bar);color:#fff;border:2px solid var(--green);border-radius:6px;padding:2px 8px;font-size:17px;text-align:center;outline:none}
+.blank:focus{box-shadow:0 0 0 3px rgba(4,170,109,.45)}
+.blank.ok{border-color:var(--green);background:#1f7a55} .blank.bad{border-color:var(--red);background:#8e3a3a}
+
+/* drag & drop */
+.slot{display:inline-block;min-width:88px;min-height:34px;vertical-align:middle;background:var(--bar);border:2px dashed #8a95a8;border-radius:6px;padding:1px 4px;text-align:center}
+.slot.over,.zone.over,.bank.over,.pool.over{outline:3px solid var(--green)}
+.slot.ok{border:2px solid var(--green)} .slot.bad{border:2px solid var(--red)}
+.bank{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;min-height:46px;padding:6px;border-radius:8px}
+.chip{display:inline-block;background:#4b5361;color:#fff;border-radius:6px;padding:3px 12px;font-size:17px;cursor:grab;user-select:none;border:2px solid transparent;transition:.12s}
+.bank .chip,.pool .chip{background:#6a7488}
+.chip:hover{background:#7b869b}
+.chip.picked{border-color:var(--yellow);transform:scale(1.07)}
+.chip.ok{background:#1f7a55;border-color:var(--green)} .chip.bad{background:#8e3a3a;border-color:var(--red)}
+.slot .chip{background:transparent;padding:0 6px}
+.slot .chip:hover{background:transparent}
+.pool{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;min-height:46px;padding:8px;background:var(--card2);border-radius:8px;margin-bottom:12px}
+.buckets{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}
+.bucket{background:var(--dark);border-radius:10px;padding:10px}
+.bucket h5{margin:0 0 8px;text-align:center;font-size:16px;font-weight:700}
+.zone{min-height:92px;border:2px dashed #7d889c;border-radius:8px;padding:8px;display:flex;flex-wrap:wrap;gap:8px;align-content:flex-start;cursor:pointer}
+.tip{font-size:14px;color:var(--muted);text-align:center;margin-top:8px}
+
+textarea{width:100%;min-height:110px;background:var(--bar);color:#fff;border:2px solid var(--green);border-radius:8px;padding:10px 12px;font:inherit;font-size:17px;resize:vertical;outline:none}
+textarea:disabled{opacity:.85}
+
+/* hint & result */
+.hintbtn{margin-top:14px;background:transparent;border:2px solid var(--yellow);color:var(--yellow);border-radius:20px;padding:3px 16px;font:inherit;font-size:15px;cursor:pointer}
+.hintbtn:hover{background:var(--yellow);color:#222}
+.hint{display:none;margin-top:10px;background:#3a4a63;border-radius:8px;padding:10px 14px;font-size:16px}
+.res{display:none;margin-top:16px;border-radius:8px;padding:12px 16px;font-size:16px;background:var(--dark)}
+.res b{color:var(--yellow)}
+.res .code{margin:6px 0;padding:8px 12px;line-height:1.6}
+
+/* submit */
+.submitbox{text-align:center;margin-top:30px;border-top:2px solid #3d4657;padding-top:24px}
+.btn{background:var(--green);color:#fff;border:none;border-radius:6px;padding:12px 34px;font:inherit;font-weight:700;font-size:20px;cursor:pointer}
+.btn:hover:not(:disabled){background:var(--green2)}
+.btn:disabled{background:#3d4657;color:#8f9bb0;cursor:not-allowed}
+.left{margin-top:12px;font-size:16px;color:var(--muted)}
+.left a{color:var(--yellow);margin:0 4px;text-decoration:none;border-bottom:1px dotted var(--yellow);cursor:pointer}
+
+/* summary */
+#summary{display:none;background:var(--bar);border-radius:14px;padding:26px;text-align:center;margin-bottom:18px;border:3px solid var(--green)}
+#summary .big{font-size:64px;font-weight:700;color:var(--green);line-height:1.1}
+#summary .emoji{font-size:62px;animation:pop 1s ease infinite alternate}
+@keyframes pop{to{transform:scale(1.18) rotate(6deg)}}
+#summary h3{margin:6px 0;font-size:28px;font-weight:600}
+.brk{margin:20px auto 0;max-width:560px;text-align:left}
+.brk .row{display:flex;align-items:center;gap:10px;margin:8px 0;font-size:16px}
+.brk .nm{flex:0 0 46%} .brk .mini{flex:1;height:10px;background:#3d4657;border-radius:6px;overflow:hidden}
+.brk .mini i{display:block;height:100%;background:var(--green)}
+.brk .sc{flex:0 0 58px;text-align:right}
+footer{text-align:center;color:var(--muted);font-size:14px;margin-top:40px}
+@media(max-width:600px){body{font-size:16px}header.hero h1{font-size:30px}.card{padding:16px 14px}.sec h2{font-size:24px}.layout{display:block;padding:0}
+  .side{position:sticky;top:44px;z-index:15;flex-direction:row;overflow-x:auto;margin:0;border-radius:0;padding:6px 8px;box-shadow:0 3px 8px rgba(0,0,0,.3)}
+  .side h6{display:none}.tab{width:auto;padding:7px 10px;font-size:15px;white-space:nowrap}.tab small{display:none}
+  .wrap{padding:18px 14px 50px}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="in">
+    <b id="pcount">0 / 30 answered</b>
+    <div class="track"><div class="fill" id="pfill"></div></div>
+  </div>
+</div>
+
+<div class="layout">
+<aside class="side" id="tabs"></aside>
+<div class="wrap">
+  <header class="hero">
+    <h1>🐍 Python <span>Variables</span> Quiz</h1>
+    <p>30 questions · 6 tabs · Take your time and have fun! 😊</p>
+    <ul class="rules">
+      <li>Each question is worth <b>1 point</b> (30 points total).</li>
+      <li>Use the <b>tabs</b> at the top to move between sections.</li>
+      <li>The <b>Submit</b> button turns on only after you answer <b>all 30</b> questions.</li>
+      <li>Stuck? Press <b>💡 Hint</b>.</li>
+      <li>The written questions can earn <b>half points</b> too.</li>
+      <li>Drag &amp; drop: drag a chip, or just <b>click / tap</b> it.</li>
+    </ul>
+  </header>
+
+  <div id="summary"></div>
+  <div id="quiz"></div>
+
+  <div class="submitbox">
+    <button class="btn" id="submit" disabled>Submit Answer »</button>
+    <div class="left" id="left"></div>
+  </div>
+  <footer>Made with ❤️ for a little Python hero</footer>
+</div>
+</div>
+
+<script>
+/* ============================================================
+   QUESTIONS  (each tab starts with a "Remember" box)
+   ============================================================ */
+const TF = (q, ans, extra) => Object.assign({t:'mcq', q, opts:['True ✅','False ❌'], a: ans ? 0 : 1}, extra);
+
+const SECTIONS = [
+{
+  icon:'📦', short:'Variables', title:'What is a Variable?',
+  intro:`<h4>📘 Remember</h4>
+   A variable is like a <b>box with a name tag</b>. Inside the box we keep a <b>value</b> (something we want to remember).
+   <ul>
+    <li><code>name = "Ali"</code> → the box is called <code>name</code> and <code>"Ali"</code> is inside it.</li>
+    <li>The <code>=</code> sign means <b>"put this inside"</b>, not "equals" like in math!</li>
+    <li>The value in the box can <b>change</b> (that's why it's called a <i>variable</i> — it can vary).</li>
+   </ul>`,
+  qs:[
+   {t:'mcq', q:`Which is the best way to think about a variable?`,
+    opts:['A box with a name tag that holds a value','A computer screen','A keyboard button','An internet cable'], a:0,
+    hint:'Think: a box, a label on it, and something inside.',
+    exp:'A variable is a named box in the computer\'s memory. We put a value inside so we can use it again later.'},
+   TF(`A variable is used to <b>store information (data)</b> in the computer's memory.`, true,
+    {hint:'What do we use a box for?', exp:'That\'s right! A variable stores a value, like a name or an age.'}),
+   {t:'mcq', q:`Which line <b>creates a variable</b> in Python?`,
+    opts:['var x = 5','x = 5','int x = 5','5 = x'], a:1,
+    hint:'In Python we write the name first, then <code>=</code>, then the value. No extra words in front.',
+    exp:'<code>x = 5</code> is correct. The others come from other languages (JavaScript, C). <code>5 = x</code> is backwards: the name comes first, the value comes second.'},
+   {t:'fill', q:`The variable <code>city</code> holds Lahore. Fill in the blank so the computer prints <b>Lahore</b>.`,
+    tpl:`city = "Lahore"\nprint({0})\n# Output: Lahore`, ans:[['city']],
+    hint:'Inside <code>print()</code> we write the variable\'s name, without quotes.',
+    exp:'<code>print(city)</code> shows what is inside the box (Lahore). If you wrote <code>print("city")</code> it would print the word <i>city</i> instead.'},
+   {t:'mcq', q:`What will this code print?`, code:`x = 5\nx = 10\nprint(x)`,
+    opts:['5','10','15','Error'], a:1,
+    hint:'When a new value goes into the box, the old value is replaced.',
+    exp:'First <code>x</code> held 5, then we put 10 in. The old value (5) is gone, so the output is <b>10</b>.'}
+  ]
+},
+{
+  icon:'🏷️', short:'Names', title:'Valid and Invalid Variable Names',
+  intro:`<h4>📘 Remember — Rules for naming</h4>
+   <ul>
+    <li>✅ A name must start with a <b>letter (a-z, A-Z)</b> or an <b>underscore ( _ )</b>.</li>
+    <li>❌ A name <b>cannot start with a number</b> (<code>2cats</code> is wrong).</li>
+    <li>✅ A name can contain only letters, numbers and <code>_</code> (like <code>my_age2</code>).</li>
+    <li>❌ <b>No spaces</b> and no special symbols (<code>-</code> <code>@</code> <code>$</code> <code>!</code>).</li>
+    <li>🔠 Python is <b>case-sensitive</b>: <code>age</code> and <code>Age</code> are two different variables.</li>
+    <li>🚫 You can't use Python's special words (<code>class</code>, <code>if</code>, <code>for</code>) as names.</li>
+   </ul>`,
+  qs:[
+   {t:'sort', q:`Drag each name into the <b>Valid</b> or <b>Invalid</b> box.`,
+    buckets:['Valid ✅','Invalid ❌'],
+    items:[['my_age',0],['2cats',1],['name1',0],['my-name',1],['_score',0],['my name',1]],
+    hint:'Starts with a number? Has a space? Has a dash (-)? Then it is invalid.',
+    exp:'<code>2cats</code> starts with a number ❌. <code>my-name</code> has a dash ❌. <code>my name</code> has a space ❌. The others follow all the rules ✅.'},
+   {t:'multi', q:`Select all the <b>valid</b> variable names (more than one is correct).`,
+    opts:['student_name','1st_place','Age','total$','_hidden','first name'], a:[0,2,4],
+    hint:'Names that start with a number, or have a $ or a space, are not allowed.',
+    exp:'Correct: <code>student_name</code>, <code>Age</code>, <code>_hidden</code>. Wrong: <code>1st_place</code> (starts with a number), <code>total$</code> ($ not allowed), <code>first name</code> (has a space).'},
+   {t:'mcq', q:`Which variable name is <b>INVALID</b>?`,
+    opts:['_fruit','Fruit2','2fruit','fruit_name'], a:2,
+    hint:'Look at the very first character. Is it a number?',
+    exp:'<code>2fruit</code> starts with a number (2), so it is invalid. <code>Fruit2</code> is fine because the number is at the <i>end</i>.'},
+   TF(`In Python, <code>age</code> and <code>Age</code> are <b>two different</b> variables.`, true,
+    {hint:'Python treats capital and small letters as different.', exp:'Python is <b>case-sensitive</b>. <code>age = 5</code> and <code>Age = 9</code> are two separate boxes.'}),
+   {t:'drag', q:`Drag the right words into the blanks.`, plain:true,
+    tpl:`A variable name can start with a {0} or an {1}, but not with a number.`,
+    bank:['letter (a-z)','underscore ( _ )','number (0-9)','symbol (@ $)'], ans:['letter (a-z)','underscore ( _ )'], anyOrder:true,
+    hint:'Two things can start a name: an alphabet character and a special line that sits at the bottom.',
+    exp:'A name starts with a <b>letter</b> or an <b>underscore</b>, like <code>name</code> or <code>_name</code>.'},
+   {t:'mcq', q:`Which of these is <b>not allowed</b> in a variable name?`,
+    opts:['An underscore ( _ )','A space','Letters (a-z)','Numbers (after the first character)'], a:1,
+    hint:'An empty gap between two words would split the name in two.',
+    exp:'Spaces are not allowed. To join words, use an underscore instead: <code>my_name</code>.'}
+  ]
+},
+{
+  icon:'🔢', short:'Data Types', title:'Data Types: int, float and string',
+  intro:`<h4>📘 Remember — 3 kinds of values</h4>
+   <ul>
+    <li><b>int</b> = a whole number, no decimal point: <code>10</code>, <code>-3</code>, <code>0</code></li>
+    <li><b>float</b> = a number with a decimal point: <code>3.14</code>, <code>0.5</code>, <code>100.0</code></li>
+    <li><b>str (string)</b> = text, always inside <b>quotes</b> " " or ' ': <code>"Ali"</code>, <code>"100"</code></li>
+    <li><code>type(x)</code> tells you what kind of value <code>x</code> holds.</li>
+    <li>⚠️ <code>"100"</code> with quotes is a <b>string</b>, not a number!</li>
+   </ul>`,
+  qs:[
+   {t:'mcq', q:`Which value is an <b>integer (int)</b>?`,
+    opts:['"25"','2.5','"hello"','25'], a:3,
+    hint:'An int is a whole number: no quotes and no decimal point.',
+    exp:'<code>25</code> is a whole number, so it is an <b>int</b>. <code>"25"</code> has quotes so it is a string, and <code>2.5</code> is a float.'},
+   {t:'sort', q:`Drag each value into the box for its <b>correct type</b>.`,
+    buckets:['int (whole number)','float (has a point)','string (text)'],
+    items:[['10',0],['3.5',1],['"Ali"',2],['-7',0],['0.25',1],['"100"',2]],
+    hint:'Quotes → string. Decimal point → float. Otherwise → int.',
+    exp:'<code>10</code> and <code>-7</code> are int. <code>3.5</code> and <code>0.25</code> are float. <code>"Ali"</code> and <code>"100"</code> are string (the quotes make them text, even if there is a number inside).'},
+   TF(`<code>"100"</code> (with quotes) is a <b>string</b>, not an int.`, true,
+    {hint:'Look at the quotes!', exp:'As soon as there are quotes, Python sees text. <code>100</code> is an int but <code>"100"</code> is a string.'}),
+   {t:'fill', q:`Finish the output. Type the data type in the blank.`,
+    tpl:`price = 9.99\nprint(type(price))\n# Output: <class '{0}'>`, ans:[['float']],
+    hint:'9.99 has a decimal point. Is that an int, a float or a str?',
+    exp:'<code>9.99</code> is a number with a decimal point, so its type is <b>float</b>.'},
+   {t:'drag', q:`Select the correct functions to print the data type of a variable:`,
+    tpl:`{0}({1}(myvar))`, bank:['typ','type','var','print','echo'], ans:['print','type'],
+    hint:'The inner function finds the type. The outer function shows it on the screen.',
+    exp:'<code>type(myvar)</code> finds the data type and <code>print(...)</code> shows it on the screen. Together: <code>print(type(myvar))</code>.'},
+   {t:'mcq', q:`Which line creates a <b>string variable</b>?`,
+    opts:['a = 10','b = 2.5','c = "Zain"','d = 7'], a:2,
+    hint:'A string is always inside quotes.',
+    exp:'<code>c = "Zain"</code> has Zain inside quotes, so it is a string. The other three are numbers.'},
+   {t:'multi', q:`Select all the <b>float</b> values (more than one is correct).`,
+    opts:['1.5','8','0.1','"2.5"','100.0'], a:[0,2,4],
+    hint:'Pick the numbers with a decimal point, but watch out for quotes!',
+    exp:'<code>1.5</code>, <code>0.1</code> and <code>100.0</code> are floats. <code>8</code> is an int and <code>"2.5"</code> is a string.'}
+  ]
+},
+{
+  icon:'💾', short:'Storing', title:'Storing Values',
+  intro:`<h4>📘 Remember</h4>
+   <ul>
+    <li>We use <code>=</code> to <b>store</b> a value in a variable: <code>marks = 95</code></li>
+    <li>You can <b>change</b> the value later. Even the <b>type</b> can change (<code>x = 5</code> then <code>x = "five"</code>).</li>
+    <li>number + number = they are <b>added</b> (<code>5 + 3</code> is <code>8</code>).</li>
+    <li>string + string = they are <b>joined</b> (<code>"5" + "3"</code> is <code>"53"</code>).</li>
+    <li>A <b>name</b> is text → string. An <b>age</b> is a whole number → int. A <b>height</b> with a point → float.</li>
+   </ul>`,
+  qs:[
+   {t:'fill', q:`Store <b>95</b> in the variable <code>marks</code>. Type the correct symbol in the blank.`,
+    tpl:`marks {0} 95\nprint(marks)   # 95`, ans:[['=']],
+    hint:'This symbol means "put this inside".',
+    exp:'The <code>=</code> sign is called the assignment operator. It puts the value on the right into the variable on the left.'},
+   {t:'mcq', q:`What will this code print?`, code:`x = 5\ny = 3\nprint(x + y)`,
+    opts:['x + y','53','Error','8'], a:3,
+    hint:'Both x and y hold numbers (ints). Add them up!',
+    exp:'<code>x</code> is 5 and <code>y</code> is 3, so <code>x + y</code> is <b>8</b>. Python adds the values inside the boxes, not the letters.'},
+   {t:'mcq', q:`Careful! What will this code print? (Look at the quotes.)`, code:`a = "5"\nb = "3"\nprint(a + b)`,
+    opts:['8','53','15','Error'], a:1,
+    hint:'Quotes mean string. Strings don\'t add up like numbers; they get stuck together.',
+    exp:'<code>"5"</code> and <code>"3"</code> are strings, so <code>+</code> <b>joins</b> them together → <code>53</code>.'},
+   {t:'drag', q:`Drag the right value for each variable (read the comments).`,
+    tpl:`name = {0}      # string (text)\nage = {1}       # int (whole number)\nheight = {2}    # float (has a point)`,
+    bank:['"Sara"','12','4.8','print'], ans:['"Sara"','12','4.8'],
+    hint:'Text → quotes. Whole number → int. Decimal point → float.',
+    exp:'<code>"Sara"</code> is a string, <code>12</code> is an int and <code>4.8</code> is a float. <code>print</code> is a function, not a value.'},
+   {t:'mcq', q:`What will this code print?`, code:`x = 5\nx = "five"\nprint(x)`,
+    opts:['five','5','Error','5five'], a:0,
+    hint:'A new value went into the box, so the old one is gone.',
+    exp:'In Python a variable can change its type too. <code>x</code> was an int, now it is a string, so <b>five</b> is printed.'}
+  ]
+},
+{
+  icon:'✍️', short:'Syntax', title:'Python Syntax',
+  intro:`<h4>📘 Remember — Rules for writing Python</h4>
+   <ul>
+    <li><code>print("Hello")</code> shows something on the screen. Don't forget to close the brackets and quotes.</li>
+    <li>Python is <b>case-sensitive</b>: <code>print</code> is correct, <code>Print</code> is wrong.</li>
+    <li><b>Indentation</b> (the space at the start of a line) <b>matters</b>. It is not just for looks!</li>
+    <li>A <code>#</code> starts a <b>comment</b>. Python ignores comments.</li>
+   </ul>`,
+  qs:[
+   {t:'fill', q:`Insert the missing part of the code below to output "Hello World".`,
+    tpl:`{0}("Hello World")`, ans:[['print']],
+    hint:'The function that shows text on the screen, 5 letters long.',
+    exp:'The <code>print()</code> function shows text on the screen.'},
+   TF(`Indentation in Python is for readability only.`, false,
+    {hint:'If the indentation is wrong, Python gives an error.', exp:'<b>False!</b> Indentation is very important in Python. It tells Python which lines belong together in a block. Wrong indentation causes an <code>IndentationError</code>.'}),
+   {t:'mcq', q:`Which symbol starts a <b>comment</b> in Python?`,
+    opts:['//','#','/* */','<!-- -->'], a:1,
+    hint:'This symbol is called "hash" or "pound".',
+    exp:'<code># this is a comment</code> — Python skips this line. Comments are notes for humans.'},
+   {t:'mcq', q:`Which line is written <b>correctly</b>?`,
+    opts:['Print("Hi")','print("Hi"','print("Hi")','print Hi'], a:2,
+    hint:'Lowercase letters, closed bracket, quotes on both sides.',
+    exp:'<code>print("Hi")</code> is correct. <code>Print</code> has a capital P ❌, <code>print("Hi"</code> is missing the closing bracket ❌, and <code>print Hi</code> has no brackets or quotes ❌.'}
+  ]
+},
+{
+  icon:'🧠', short:'Written', title:'Write in Your Own Words (Theory)',
+  intro:`<h4>📘 Remember</h4>
+   Now answer in your own words. The computer looks for the <b>important ideas</b> in what you write.
+   <ul>
+    <li>✅ 2 or more correct ideas → <b>full point (1)</b></li>
+    <li>🟡 1 correct idea → <b>half a point (0.5)</b></li>
+    <li>❌ no correct ideas → 0</li>
+   </ul>`,
+  qs:[
+   {t:'theory', q:`What is a variable? Write 1–2 sentences in your own words.`,
+    groups:['stor|sav|hold|contain|box|keep|remember','value|data|inform|thing|number|text','name|label|sticker'], need:2,
+    sample:'A variable is like a box with a name that stores a value (data), for example <code>age = 10</code>.',
+    hint:'Write about a box, its name, and the value inside.',
+    exp:'A good answer: a variable is a named box that stores a value.'},
+   {t:'theory', q:`Write <b>2 rules</b> for naming a variable.`,
+    groups:['start|begin|first','letter|alphabet|underscore|_','number|digit|\\d','space|special|symbol|hyphen|dash|-|@|\\$','case|capital|lowercase|uppercase|small','keyword|reserved|class'], need:2,
+    sample:'1) A name must start with a letter or an underscore, not a number. 2) A name cannot have spaces or special symbols (-, @, $). (Python also treats capital and small letters as different.)',
+    hint:'What can a name start with? What is not allowed inside a name? What about capital letters?',
+    exp:'Rules: start with a letter or underscore (not a number), no spaces or special symbols, and names are case-sensitive.'},
+   {t:'theory', q:`What is the difference between <b>int</b>, <b>float</b> and <b>string</b>? Give an example of each.`,
+    groups:['whole|integer|no decimal|without decimal|no point','decimal|point|dot|\\d\\.\\d','text|quote|"|\'|word|letter|characters'], need:2,
+    sample:'An int is a whole number (10). A float is a number with a decimal point (3.14). A string is text written inside quotes ("Ali").',
+    hint:'Whole number / number with a point / text inside quotes.',
+    exp:'int = whole number (10), float = decimal number (3.14), string = text in quotes ("Ali").'}
+  ]
+}
+];
+
+/* ============================================================
+   HELPERS
+   ============================================================ */
+const $ = (s, r=document) => r.querySelector(s);
+const el = (tag, cls, html) => { const e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; };
+const esc = s => String(s).replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+const shuffle = a => { a = a.slice(); for (let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; };
+const norm = s => (s||'').trim().toLowerCase();
+const fillTpl = (tpl, arr) => esc(tpl).replace(/\{(\d+)\}/g, (_, i) => arr[i]==null ? '___' : esc(arr[i]));
+const fmt = n => String(Number(n.toFixed(2)));
+
+let dragging = null;
+
+function mkChip(v, onClick){
+  const c = el('span','chip'); c.textContent = v; c.dataset.v = v; c.draggable = true;
+  c.addEventListener('dragstart', e => { dragging = c; try{ e.dataTransfer.setData('text/plain', v); }catch(_){} setTimeout(()=>c.style.opacity='.4',0); });
+  c.addEventListener('dragend', () => { c.style.opacity=''; dragging = null; document.querySelectorAll('.over').forEach(x=>x.classList.remove('over')); });
+  c.addEventListener('click', e => { e.stopPropagation(); onClick(c); });
+  return c;
+}
+function dropTarget(t, onDrop){
+  t.addEventListener('dragover', e => { e.preventDefault(); t.classList.add('over'); });
+  t.addEventListener('dragleave', () => t.classList.remove('over'));
+  t.addEventListener('drop', e => { e.preventDefault(); t.classList.remove('over'); if (dragging) onDrop(dragging); });
+}
+
+/* ============================================================
+   RENDERERS — each returns {el, answered(), score() 0..1, reveal(), lock(), correct() html, note()?}
+   ============================================================ */
+function rMcq(q, n, onChange){
+  const box = el('div','opts'); let val = null; const rows = [];
+  q.opts.forEach((o,i) => {
+    const lab = el('label','opt'); const inp = el('input'); inp.type='radio'; inp.name='q'+n;
+    lab.append(inp, el('span','', o));
+    inp.addEventListener('change', () => { val = i; rows.forEach((r,k)=>r.classList.toggle('sel',k===i)); onChange(); });
+    rows.push(lab); box.append(lab);
+  });
+  return { el:box, answered:()=>val!==null, score:()=>val===q.a?1:0,
+    reveal(){ rows.forEach((r,i)=>{ if(i===q.a) r.classList.add('ok'); else if(i===val) r.classList.add('bad'); }); },
+    lock(){ rows.forEach(r=>r.querySelector('input').disabled=true); },
+    correct:()=>q.opts[q.a] };
+}
+
+function rMulti(q, n, onChange){
+  const box = el('div','opts'); const sel = new Set(); const rows = [];
+  box.append(el('div','tip','☑️ More than one answer can be correct'));
+  q.opts.forEach((o,i) => {
+    const lab = el('label','opt'); const inp = el('input'); inp.type='checkbox';
+    lab.append(inp, el('span','', `<code>${esc(o)}</code>`));
+    inp.addEventListener('change', () => { inp.checked ? sel.add(i) : sel.delete(i); lab.classList.toggle('sel', inp.checked); onChange(); });
+    rows.push(lab); box.append(lab);
+  });
+  return { el:box, answered:()=>sel.size>0,
+    score(){ let good=0,wrong=0; sel.forEach(i=> q.a.includes(i)?good++:wrong++); return Math.max(0,(good-wrong)/q.a.length); },
+    reveal(){ rows.forEach((r,i)=>{ if(q.a.includes(i)) r.classList.add('ok'); else if(sel.has(i)) r.classList.add('bad'); }); },
+    lock(){ rows.forEach(r=>r.querySelector('input').disabled=true); },
+    correct:()=>q.a.map(i=>`<code>${esc(q.opts[i])}</code>`).join(', ') };
+}
+
+function rFill(q, n, onChange){
+  const code = el('div','code'); const inputs = [];
+  q.tpl.split(/(\{\d+\})/).forEach(p => {
+    const m = p.match(/^\{(\d+)\}$/);
+    if (m){
+      const i = el('input','blank'); i.type='text'; i.autocomplete='off'; i.spellcheck=false; i.setAttribute('autocapitalize','off');
+      i.style.width = Math.max(7, Math.max(...q.ans[m[1]].map(x=>x.length))+3) + 'ch';
+      i.addEventListener('input', onChange); inputs.push(i); code.append(i);
+    } else code.append(document.createTextNode(p));
+  });
+  return { el:code, answered:()=>inputs.every(i=>i.value.trim()!==''),
+    score:()=>inputs.filter((i,k)=>q.ans[k].includes(norm(i.value))).length/inputs.length,
+    reveal(){ inputs.forEach((i,k)=>i.classList.add(q.ans[k].includes(norm(i.value))?'ok':'bad')); },
+    lock(){ inputs.forEach(i=>i.disabled=true); },
+    correct:()=>`<div class="code">${fillTpl(q.tpl, q.ans.map(a=>a[0]))}</div>` };
+}
+
+function rDrag(q, n, onChange){
+  const wrap = el('div'); const code = el('div','code'+(q.plain?' plain':'')); const slots = [];
+  q.tpl.split(/(\{\d+\})/).forEach(p => {
+    const m = p.match(/^\{(\d+)\}$/);
+    if (m){ const s = el('span','slot'); slots.push(s); code.append(s); }
+    else code.append(document.createTextNode(p));
+  });
+  const bank = el('div','bank');
+  const toBank = c => { bank.append(c); onChange(); };
+  const toSlot = (c, s) => { if (s.firstChild && s.firstChild!==c) bank.append(s.firstChild); s.append(c); onChange(); };
+  const click = c => {
+    if (c.parentNode !== bank) return toBank(c);
+    const free = slots.find(s=>!s.firstChild); if (free) toSlot(c, free);
+  };
+  shuffle(q.bank).forEach(v => bank.append(mkChip(v, click)));
+  slots.forEach(s => dropTarget(s, c => toSlot(c, s)));
+  dropTarget(bank, c => toBank(c));
+  wrap.append(code, bank, el('div','tip','👆 Drag a chip into a blank, or click / tap it. Click a placed chip to take it back.'));
+  const vals = () => slots.map(s => s.firstChild ? s.firstChild.dataset.v : null);
+  const okAt = (v,k) => q.anyOrder ? (q.ans.includes(v) && vals().indexOf(v)===k) : v===q.ans[k];
+  return { el:wrap, answered:()=>slots.every(s=>s.firstChild),
+    score:()=>vals().filter(okAt).length/slots.length,
+    reveal(){ vals().forEach((v,k)=>slots[k].classList.add(okAt(v,k)?'ok':'bad')); },
+    lock(){ wrap.classList.add('locked'); wrap.querySelectorAll('.chip').forEach(c=>{c.draggable=false; c.replaceWith(c.cloneNode(true));}); },
+    correct:()=>`<div class="code${q.plain?' plain':''}">${fillTpl(q.tpl, q.ans)}</div>` };
+}
+
+function rSort(q, n, onChange){
+  const wrap = el('div'); const pool = el('div','pool'); const zones = []; let picked = null;
+  const pick = c => {
+    if (c.parentNode !== pool) { pool.append(c); onChange(); return; }
+    if (picked) picked.classList.remove('picked');
+    picked = (picked===c) ? null : c; if (picked) picked.classList.add('picked');
+  };
+  const put = (c, z) => { z.append(c); if (picked===c){ c.classList.remove('picked'); picked=null; } onChange(); };
+  shuffle(q.items).forEach(it => pool.append(mkChip(it[0], pick)));
+  dropTarget(pool, c => { pool.append(c); onChange(); });
+  const grid = el('div','buckets');
+  q.buckets.forEach(b => {
+    const bk = el('div','bucket'); bk.append(el('h5','',esc(b)));
+    const z = el('div','zone'); zones.push(z);
+    z.addEventListener('click', () => { if (picked) put(picked, z); });
+    dropTarget(z, c => put(c, z));
+    bk.append(z); grid.append(bk);
+  });
+  wrap.append(pool, grid, el('div','tip','👆 Drag a chip into a box, or click a chip first and then click a box. Click a placed chip to take it back.'));
+  const correctIdx = v => q.items.find(i=>i[0]===v)[1];
+  return { el:wrap, answered:()=>pool.children.length===0,
+    score(){ let g=0; zones.forEach((z,k)=>z.querySelectorAll('.chip').forEach(c=>{ if(correctIdx(c.dataset.v)===k) g++; })); return g/q.items.length; },
+    reveal(){ zones.forEach((z,k)=>z.querySelectorAll('.chip').forEach(c=>c.classList.add(correctIdx(c.dataset.v)===k?'ok':'bad'))); },
+    lock(){ wrap.classList.add('locked'); wrap.querySelectorAll('.chip').forEach(c=>{ c.draggable=false; c.replaceWith(c.cloneNode(true)); }); wrap.querySelectorAll('.zone').forEach(z=>z.replaceWith(z.cloneNode(true))); },
+    correct:()=>q.buckets.map((b,k)=>`<b>${esc(b)}</b>: ${q.items.filter(i=>i[1]===k).map(i=>`<code>${esc(i[0])}</code>`).join(' ')}`).join('<br>') };
+}
+
+function rTheory(q, n, onChange){
+  const ta = el('textarea'); ta.placeholder = 'Type your answer here...'; ta.addEventListener('input', onChange);
+  const re = q.groups.map(g => new RegExp(g,'i'));
+  const hits = () => re.filter(r => r.test(ta.value)).length;
+  return { el:ta, answered:()=>ta.value.trim().length>=3,
+    score(){ const h = hits(); return h>=q.need ? 1 : h>=1 ? 0.5 : 0; },
+    reveal(){}, lock(){ ta.disabled = true; },
+    note(){ const h = hits(); return h>=q.need ? '🎉 Your answer had the important ideas — full point!' : h>=1 ? '🟡 One idea in your answer was right — you got <b>half a point (0.5)</b>. Add one more idea for a full point.' : '🙂 We could not find the key ideas. Read the model answer below.'; },
+    correct:()=>q.sample };
+}
+
+const RENDER = { mcq:rMcq, multi:rMulti, fill:rFill, drag:rDrag, sort:rSort, theory:rTheory };
+
+/* ============================================================
+   BUILD / TABS / SUBMIT
+   ============================================================ */
+let items = [], submitted = false, tabBtns = [], panels = [];
+const TOTAL = SECTIONS.reduce((a,s)=>a+s.qs.length,0);
+
+function showTab(i){
+  tabBtns.forEach((b,k)=>b.classList.toggle('active',k===i));
+  panels.forEach((p,k)=>p.classList.toggle('active',k===i));
+  if (tabBtns[i]) tabBtns[i].scrollIntoView({block:'nearest',inline:'center'});
+  window.scrollTo({top: submitted ? $('#summary').offsetTop - 120 : 0, behavior:'smooth'});
+}
+function goto(n){
+  const it = items.find(i=>i.n===n); if (!it) return;
+  showTab(it.si);
+  setTimeout(()=>{ it.card.scrollIntoView({behavior:'smooth',block:'center'}); it.card.classList.add('flash'); setTimeout(()=>it.card.classList.remove('flash'),1300); }, 120);
+}
+
+function build(){
+  submitted = false; items = []; tabBtns = []; panels = [];
+  $('#quiz').innerHTML = ''; $('#tabs').innerHTML = '<h6>Sections</h6>'; $('#summary').style.display = 'none';
+  const sb = $('#submit'); sb.textContent = 'Submit Answer »'; sb.style.display = '';
+  let n = 0;
+  SECTIONS.forEach((s, si) => {
+    const tb = el('button','tab'); tb.type='button'; tb.onclick = () => showTab(si);
+    tabBtns.push(tb); $('#tabs').append(tb);
+
+    const sec = el('section','sec');
+    sec.append(el('h2','', `${s.icon} ${s.title}`), el('div','learn', s.intro));
+    s.qs.forEach(q => {
+      n++;
+      const card = el('div','card'); card.id = 'q'+n;
+      const badge = el('span','badge');
+      const head = el('div','qhead'); head.append(el('span','qn','Question '+n+' of '+TOTAL), badge);
+      const r = RENDER[q.t](q, n, update);
+      card.append(head, el('div','qtext', q.q));
+      if (q.code) card.append(el('pre','code', esc(q.code)));
+      card.append(r.el);
+      const hb = el('button','hintbtn','💡 Hint'); hb.type='button';
+      const hint = el('div','hint', q.hint);
+      hb.onclick = () => { hint.style.display = hint.style.display==='block' ? 'none' : 'block'; };
+      const res = el('div','res');
+      card.append(hb, hint, res);
+      sec.append(card);
+      items.push({q, r, card, badge, hb, hint, res, n, si});
+    });
+    const nav = el('div','nav');
+    const prev = el('button','nbtn','« Previous'); prev.type='button'; prev.onclick = () => showTab(si-1);
+    const next = el('button','nbtn next','Next »'); next.type='button'; next.onclick = () => showTab(si+1);
+    nav.append(si>0 ? prev : el('span'), si<SECTIONS.length-1 ? next : el('span'));
+    sec.append(nav);
+    panels.push(sec); $('#quiz').append(sec);
+  });
+  update(); showTab(0);
+}
+
+function setTab(si, got, max, graded){
+  const s = SECTIONS[si];
+  tabBtns[si].innerHTML = `<span class="ti">${s.icon}</span><span class="tl">${s.short}</span><small>${fmt(got)}/${max}</small><span class="ck" title="Section complete">✅</span>`;
+  tabBtns[si].classList.toggle('done', graded ? true : got===max);
+}
+
+function update(){
+  if (submitted) return;
+  const done = items.filter(i => i.r.answered());
+  $('#pcount').textContent = `${done.length} / ${TOTAL} answered`;
+  $('#pfill').style.width = (done.length/TOTAL*100) + '%';
+  SECTIONS.forEach((s,si) => {
+    const d = items.filter(i=>i.si===si && i.r.answered()).length;
+    setTab(si, d, s.qs.length);
+  });
+  const left = items.filter(i => !i.r.answered());
+  $('#submit').disabled = left.length > 0;
+  $('#left').innerHTML = left.length
+    ? `<b>${left.length}</b> question${left.length>1?'s':''} still to answer: ` + left.map(i=>`<a data-n="${i.n}">Q${i.n}</a>`).join(' ')
+    : '🎉 Awesome! You answered everything. Press Submit!';
+  $('#left').querySelectorAll('a').forEach(a => a.onclick = () => goto(+a.dataset.n));
+}
+
+function submit(){
+  if (submitted || items.some(i=>!i.r.answered())) return;
+  submitted = true;
+  let total = 0; const sec = SECTIONS.map(()=>({got:0,max:0}));
+  items.forEach(it => {
+    const f = it.r.score(); total += f; sec[it.si].got += f; sec[it.si].max += 1;
+    it.r.reveal(); it.r.lock();
+    const cls = f===1 ? 'ok' : f===0 ? 'bad' : 'part';
+    it.card.classList.add(cls);
+    it.badge.className = 'badge ' + cls;
+    it.badge.textContent = (f===1?'✅ ':f===0?'❌ ':'🟡 ') + fmt(f) + ' / 1';
+    it.hb.style.display = 'none'; it.hint.style.display = 'none';
+    const label = f===1 ? 'Awesome! Totally correct 🎉' : f===0 ? 'No worries, that\'s how we learn 💪' : 'Almost there 🙂';
+    it.res.innerHTML = `<b>${label}</b>` +
+      (it.r.note ? `<div style="margin:6px 0">${it.r.note()}</div>` : '') +
+      `<div style="margin-top:6px"><b>✔ Correct answer:</b></div><div>${it.r.correct()}</div>` +
+      `<div style="margin-top:6px"><b>📖 Let's understand:</b> ${it.q.exp}</div>`;
+    it.res.style.display = 'block';
+  });
+  SECTIONS.forEach((s,si) => {
+    setTab(si, sec[si].got, sec[si].max, true);
+  });
+  const pct = total / TOTAL * 100;
+  const [emoji, msg] = pct>=90 ? ['🏆','Amazing! You are a Python Champion!'] : pct>=70 ? ['🌟','Great job! You are learning fast!'] : pct>=50 ? ['👍','Good try! A little more practice and you\'ll be a pro.'] : ['🌱','Keep going! Read the lessons again and try once more. You can do it!'];
+  $('#summary').innerHTML = `<div class="emoji">${emoji}</div><div class="big">${fmt(total)} / ${TOTAL}</div>
+    <h3>${msg}</h3><div style="color:var(--muted)">${Math.round(pct)}% score</div>
+    <div class="brk">` + SECTIONS.map((s,i)=>`<div class="row"><span class="nm">${s.icon} ${s.short}</span><span class="mini"><i style="width:${sec[i].got/sec[i].max*100}%"></i></span><span class="sc">${fmt(sec[i].got)}/${sec[i].max}</span></div>`).join('') + `</div>
+    <p style="color:var(--muted);font-size:15px;margin-top:16px">⬇️ Click each tab to see the correct answers and explanations.</p>`;
+  $('#summary').style.display = 'block';
+  $('#left').innerHTML = '';
+  const sb = $('#submit'); sb.disabled = false; sb.textContent = '🔄 Try Again'; sb.onclick = () => { sb.onclick = submit; build(); };
+  $('#pcount').textContent = `Score: ${fmt(total)} / ${TOTAL}`;
+  showTab(0);
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+$('#submit').onclick = submit;
+build();
+</script>
+</body>
+</html>
